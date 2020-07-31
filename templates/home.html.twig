@@ -1,16 +1,42 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h1>Enter your var_dump</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Enter your dump</h1>
+            </div>
+        </div>
 
-    {{ form_start(form) }}
-        {{ form_row(form) }}
-        <button type="submit">Submit !</button>
-    {{ form_end(form) }}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-12">
+                {{ form_errors(form.content, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-12 my-3">
+                <button type="submit" class="btn btn-primary btn-block">Formater</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
 
-    {% if nodes is not null %}
-        <h1>Dump of nodes</h1>
+        {% if nodes is not null %}
+            <div class="row">
+                <div class="col-12">
+                    <h2>Résultat</h2>
+                </div>
+                <div class="col-12" id="result">
+                    {% for node in nodes.children %}
+                        {% include 'node.html.twig' with {node: node} %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
 
-        {{ dump(nodes) }}
-    {% endif %}
+        {% if nodes is not null %}
+            <h1>Dump of nodes</h1>
+
+            {{ dump(nodes) }}
+        {% endif %}
+    </div>
 {% endblock %}
