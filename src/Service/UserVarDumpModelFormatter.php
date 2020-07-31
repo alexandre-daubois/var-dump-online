@@ -8,6 +8,7 @@ use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
 use App\Exception\UnknownTypeException;
 use Symfony\Component\String\UnicodeString;
+use Symfony\Component\VarDumper\VarDumper;
 use function Symfony\Component\String\u;
 
 class UserVarDumpModelFormatter
@@ -40,7 +41,7 @@ class UserVarDumpModelFormatter
 
     /**
      * @param string $content
-     * @param Node $currentNode
+     * @param Node|null $currentNode
      * @throws UnknownTypeException
      */
     private function processContent(string $content, Node $currentNode)
@@ -52,12 +53,11 @@ class UserVarDumpModelFormatter
             $node = new Node();
             $node
                 ->setType(self::TYPE_ARRAY)
-                ->setValue($this->extractValue(self::TYPE_ARRAY, $content))
-                ->setDepth($currentNode->getDepth() + 1);
+                ->setValue($this->extractValue(self::TYPE_ARRAY, $content));
 
-//            foreach ($this->processProperties($this->extractArrayProperties($content)) as $newNode) {
-//                $node->addChild($newNode);
-//            }
+            $node->setDepth($currentNode->getDepth() + 1);
+
+            $this->processProperties($this->extractArrayProperties($content), $node);
         } else if ($content->startsWith(self::TYPE_FLOAT)) {
             $node = $this->createPrimitiveNode(self::TYPE_FLOAT, $content);
         } else if ($content->startsWith(self::TYPE_INT)) {
@@ -72,9 +72,9 @@ class UserVarDumpModelFormatter
                 ])
                 ->setValue($this->extractStringValue($content));
         } else if ($content->startsWith(self::TYPE_OBJECT)) {
-
+            // todo :)
         } else {
-            throw new UnknownTypeException();
+            throw new UnknownTypeException($content->toString());
         }
 
         $currentNode->addChild($node);
@@ -135,22 +135,24 @@ class UserVarDumpModelFormatter
 
     /**
      * @param UnicodeString $content
+     * @param Node $currentNode
      * @return \Iterator
+     * @throws UnknownTypeException
      */
-    private function processProperties(UnicodeString $content): \Iterator
+    private function processProperties(UnicodeString $content, Node $currentNode): void
     {
         // While it contains an opening bracket, there might be new properties
-        while ($content->containsAny("[")) {
-            $node = new Node();
+        $matches = preg_split('/\[(\d+|\".+\")\]\=\>/', $content->trim()->toString(), -1, PREG_SPLIT_NO_EMPTY);
+        preg_match_all('/\[(\d+|\".+\")\]\=\>/', $content->trim()->toString(), $keysMatch);
+
+        for ($i = 0; $i < count($matches); ++$i) {
+            $match = u($matches[$i])->trim();
+            $node = $this->processContent($match, $currentNode);
             $node
                 ->setExtraData([
                     // What if the property contains these tokens ?
-                    'propertyName' => $content->after('[')->before(']=>')->toString()
+                    'propertyName' => u($keysMatch[0][$i])->after('[')->beforeLast(']=>')->toString()
                 ]);
-
-            yield $node;
-
-//            $content = $content->after("[");
         }
     }
 }

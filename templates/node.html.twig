@@ -1,0 +1,5 @@
+{% if node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_INT") or node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_FLOAT") %}
+    <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value">{{ node.value }}</span>
+{% elseif node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_STRING") %}
+    <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value-string">{{ node.value }}</span>&nbsp;<span class="var-length-string">length: {{ node.extraData.length }}</span>
+{% endif %}
