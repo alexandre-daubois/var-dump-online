@@ -1,8 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    <h1>Enter your var_dump</h1>
+
     {{ form_start(form) }}
         {{ form_row(form) }}
         <button type="submit">Submit !</button>
     {{ form_end(form) }}
+
+    {% if nodes is not null %}
+        <h1>Dump of nodes</h1>
+
+        {{ dump(nodes) }}
+    {% endif %}
 {% endblock %}

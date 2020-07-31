@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
-use App\Service\UserVarDumpModelProcesser;
+use App\Service\UserVarDumpModelFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,25 +18,27 @@ class HomeController extends AbstractController
      * @Route("/", name="_home")
      *
      * @param Request $request
-     * @param UserVarDumpModelProcesser $processer
+     * @param UserVarDumpModelFormatter $formatter
      * @return Response
      */
-    public function home(Request $request, UserVarDumpModelProcesser $processer)
+    public function home(Request $request, UserVarDumpModelFormatter $formatter)
     {
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
+        $root = null;
 
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 // Process content
-                $processer->process($userVarDumpModel);
+                $root = $formatter->format($userVarDumpModel);
             }
         }
 
         return $this->render("home.html.twig", [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'nodes' => $root
         ]);
     }
 }
