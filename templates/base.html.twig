@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}VarDumpFormatter - Beautify your dumps online{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -28,13 +28,15 @@
                 font-family: 'Open Sans', sans-serif;
             }
 
-            h1, h1 > span {
+            h1 {
                 font-family: GoBoldItalic, sans-serif;
             }
 
-            h1 > span {
-                color: #555555;
-                font-size: 40px;
+            #main-title {
+                background-image: -webkit-gradient(linear, right top, left top, from(#fe5915), to(#ffad36));
+                background-image: linear-gradient(270deg, #fe5915, #ffad36);
+                -webkit-text-fill-color: transparent;
+                -webkit-background-clip: text;
             }
 
             .navbar-brand {
@@ -78,7 +80,8 @@
             }
 
             #footer, #header {
-                background-color: #101010;
+                background: rgb(16,16,16);
+                background: radial-gradient(circle, rgba(16,16,16,1) 0%, rgba(33,33,33,1) 100%);
                 color: #F5F5F5;
             }
 
@@ -95,6 +98,16 @@
             }
         </style>
         {% block stylesheets %}{% endblock %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174246170-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-174246170-1');
+        </script>
+
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark sticky-top navbar-expand-lg">
