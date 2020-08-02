@@ -47,11 +47,10 @@ class UserVarDumpModelFormatter
             $node = new Node();
             $node
                 ->setType(Node::TYPE_ARRAY)
-                ->setValue($this->extractValue(Node::TYPE_ARRAY, $content));
+                ->setValue($this->extractValue(Node::TYPE_ARRAY, $content))
+                ->setDepth($currentNode->getDepth() + 1);
 
-            $node->setDepth($currentNode->getDepth() + 1);
-
-            $this->processProperties($this->extractArrayProperties($content), $node);
+            $this->processProperties($this->extractProperties($content), $node);
         } else if ($content->startsWith(Node::TYPE_FLOAT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
         } else if ($content->startsWith(Node::TYPE_INT)) {
@@ -66,7 +65,14 @@ class UserVarDumpModelFormatter
                 ])
                 ->setValue($this->extractStringValue($content));
         } else if ($content->startsWith(Node::TYPE_OBJECT)) {
-            // todo :)
+            $node = new Node();
+            $node
+                ->setType(Node::TYPE_OBJECT)
+                ->setValue($this->extractValue(Node::TYPE_OBJECT, $content))
+                ->setDepth($currentNode->getDepth() + 1);
+
+            $node->addExtraData('internalId', $content->after('#')->before(' ')->toString());
+            $this->processProperties($this->extractProperties($content), $node);
         } else {
             throw new UnknownTypeException($content->toString());
         }
@@ -120,7 +126,7 @@ class UserVarDumpModelFormatter
      * @param UnicodeString $content
      * @return UnicodeString
      */
-    private function extractArrayProperties(UnicodeString $content): UnicodeString
+    private function extractProperties(UnicodeString $content): UnicodeString
     {
         return $content
             ->after('{')

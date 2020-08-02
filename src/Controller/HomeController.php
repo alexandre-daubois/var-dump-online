@@ -36,16 +36,6 @@ class HomeController extends AbstractController
             }
         }
 
-//        var_dump([
-//            12,
-//            "test" => -12,
-//            "test \"super\"" => 0.000000034,
-//            5.12,
-//            -96.4,
-//            "bonjour à tous \"c'est super\""
-//        ]);
-//        die;
-
         return $this->render("home.html.twig", [
             'form' => $form->createView(),
             'nodes' => $root

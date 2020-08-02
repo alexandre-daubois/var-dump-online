@@ -1,5 +1,5 @@
 <div class="node">
-    {% if node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
+    {% if node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") or node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_OBJECT") %}
         <span class="depth-spacer">
         {% for i in 0..node.depth %}
             &nbsp;
@@ -15,6 +15,13 @@
     {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
         <span class="var-type var-type-array">{{ node.type }}</span>&nbsp;<span
             class="var-length">length: {{ node.value }}</span>
+        {% for child in node.children %}
+            {% include 'node.html.twig' with {node: child} %}
+        {% endfor %}
+    {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_OBJECT") %}
+        <span class="var-type var-type-object">{{ node.type }}</span>&nbsp;<span
+            class="var-length">type: {{ node.value }}</span>&nbsp;<span
+            class="var-internal-id">#{{ node.extraData.internalId }}</span>
         {% for child in node.children %}
             {% include 'node.html.twig' with {node: child} %}
         {% endfor %}
