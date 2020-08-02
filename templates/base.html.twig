@@ -7,7 +7,39 @@
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
         <style>
+            @font-face {
+                font-family: GoBoldItalic;
+                src: url(/fonts/Gobold%20Regular%20Italic.otf);
+            }
+
+            @font-face {
+                font-family: GoBoldItalicHollow;
+                src: url(/fonts/Gobold%20Hollow%20Italic.otf);
+            }
+
+            @font-face {
+                font-family: GoBoldLowplus;
+                src: url(/fonts/Gobold%20Lowplus.otf);
+            }
+
+            * {
+                font-family: 'Open Sans', sans-serif;
+            }
+
+            h1 {
+                font-family: GoBoldItalic, sans-serif;
+            }
+
+            .navbar-brand {
+                font-family: GoBoldItalicHollow;
+            }
+
+            .nav-link {
+                font-family: GoBoldLowplus;
+            }
+
             #result {
                 font-family: 'Source Code Pro', monospace;
             }
@@ -31,10 +63,49 @@
                 color: #BDBDBD;
                 font-style: italic;
             }
+
+            #user_var_dump_form_content {
+                min-height: 400px;
+            }
+
+            #beautifier {
+                background-color: #F5F5F5;
+            }
+
+            #footer, #header {
+                background-color: #101010;
+                color: #F5F5F5;
+            }
+
+            .navbar.bg-dark {
+                background-color: #101010 !important;
+                border-bottom: 1px solid #212121;
+            }
+
+            code {
+                color: #FFA000;
+                background-color: #212121;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
         </style>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-dark bg-dark sticky-top navbar-expand-lg">
+            <a class="navbar-brand" href="#">
+{#                <img src="/docs/4.5/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">#}
+                VDF
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Created by Alexandre Daubois</a>
+                </li>
+            </ul>
+        </nav>
         {% block body %}{% endblock %}
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
