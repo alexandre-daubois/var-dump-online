@@ -37,15 +37,12 @@ class HomeController extends AbstractController
         }
 
 //        var_dump([
-//            1 => [
-//                2.3,
-//                3
-//            ],
-//            2 => [
-//                1 => [
-//                    35
-//                ]
-//            ]
+//            12,
+//            "test" => -12,
+//            "test \"super\"" => 0.000000034,
+//            5.12,
+//            -96.4,
+//            "bonjour à tous \"c'est super\""
 //        ]);
 //        die;
 

@@ -1,5 +1,22 @@
-{% if node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_INT") or node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_FLOAT") %}
-    <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value">{{ node.value }}</span>
-{% elseif node.type == constant("App\\Service\\UserVarDumpModelFormatter::TYPE_STRING") %}
-    <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value-string">{{ node.value }}</span>&nbsp;<span class="var-length-string">length: {{ node.extraData.length }}</span>
-{% endif %}
+<div class="node">
+    {% if node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
+        <span class="depth-spacer">
+        {% for i in 0..node.depth %}
+            &nbsp;
+        {% endfor %}
+                <span class="property-name">{{ node.extraData.propertyName }}</span> <i class="material-icons">chevron_right</i>
+        </span>
+    {% endif %}
+    {% if node.type == constant("App\\Entity\\Formatter\\Node::TYPE_INT") or node.type == constant("App\\Entity\\Formatter\\Node::TYPE_FLOAT") %}
+        <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value">{{ node.value }}</span>
+    {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_STRING") %}
+        <span class="var-type">{{ node.type }}</span>&nbsp;<span class="var-value-string">{{ node.value }}</span>&nbsp;
+        <span class="var-length">length: {{ node.extraData.length }}</span>
+    {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
+        <span class="var-type var-type-array">{{ node.type }}</span>&nbsp;<span
+            class="var-length">length: {{ node.value }}</span>
+        {% for child in node.children %}
+            {% include 'node.html.twig' with {node: child} %}
+        {% endfor %}
+    {% endif %}
+</div>
