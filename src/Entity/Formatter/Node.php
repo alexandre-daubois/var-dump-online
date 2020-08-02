@@ -6,10 +6,17 @@ namespace App\Entity\Formatter;
 
 class Node
 {
+    const TYPE_ARRAY = 'array';
+    const TYPE_FLOAT = 'float';
+    const TYPE_INT = 'int';
+    const TYPE_STRING = 'string';
+    const TYPE_OBJECT = 'object';
+    const TYPE_NONE = 'none';
+
     /**
      * @var string
      */
-    protected $type;
+    protected $type = self::TYPE_NONE;
 
     /**
      * @var string
@@ -30,6 +37,11 @@ class Node
      * @var Node[]
      */
     protected $children;
+
+    /**
+     * @var Node
+     */
+    protected $parent;
 
     public function __construct()
     {
@@ -109,6 +121,17 @@ class Node
     }
 
     /**
+     * @param $key
+     * @param $data
+     * @return $this
+     */
+    public function addExtraData($key, $data): Node
+    {
+        $this->extraData[$key] = $data;
+        return $this;
+    }
+
+    /**
      * @return Node[]
      */
     public function getChildren(): array
@@ -132,6 +155,23 @@ class Node
     {
         $node->setDepth($this->getDepth() + 1);
         $this->children[] = $node;
+        $node->setParent($this);
         return $node;
+    }
+
+    /**
+     * @return Node
+     */
+    public function getParent(): Node
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param Node $parent
+     */
+    public function setParent(Node $parent): void
+    {
+        $this->parent = $parent;
     }
 }

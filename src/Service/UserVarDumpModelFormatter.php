@@ -13,12 +13,6 @@ use function Symfony\Component\String\u;
 
 class UserVarDumpModelFormatter
 {
-    const TYPE_ARRAY = 'array';
-    const TYPE_FLOAT = 'float';
-    const TYPE_INT = 'int';
-    const TYPE_STRING = 'string';
-    const TYPE_OBJECT = 'object';
-
     /**
      * @var Node
      */
@@ -49,29 +43,29 @@ class UserVarDumpModelFormatter
         $content = u($content);
         $node = null;
 
-        if ($content->startsWith(self::TYPE_ARRAY)) {
+        if ($content->startsWith(Node::TYPE_ARRAY)) {
             $node = new Node();
             $node
-                ->setType(self::TYPE_ARRAY)
-                ->setValue($this->extractValue(self::TYPE_ARRAY, $content));
+                ->setType(Node::TYPE_ARRAY)
+                ->setValue($this->extractValue(Node::TYPE_ARRAY, $content));
 
             $node->setDepth($currentNode->getDepth() + 1);
 
             $this->processProperties($this->extractArrayProperties($content), $node);
-        } else if ($content->startsWith(self::TYPE_FLOAT)) {
-            $node = $this->createPrimitiveNode(self::TYPE_FLOAT, $content);
-        } else if ($content->startsWith(self::TYPE_INT)) {
-            $node = $this->createPrimitiveNode(self::TYPE_INT, $content);
-        } else if ($content->startsWith(self::TYPE_STRING)) {
+        } else if ($content->startsWith(Node::TYPE_FLOAT)) {
+            $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
+        } else if ($content->startsWith(Node::TYPE_INT)) {
+            $node = $this->createPrimitiveNode(Node::TYPE_INT, $content);
+        } else if ($content->startsWith(Node::TYPE_STRING)) {
             $node = new Node();
 
             $node
-                ->setType(self::TYPE_STRING)
+                ->setType(Node::TYPE_STRING)
                 ->setExtraData([
-                    'length' => intval($this->extractValue(self::TYPE_STRING, $content)->toString())
+                    'length' => intval($this->extractValue(Node::TYPE_STRING, $content)->toString())
                 ])
                 ->setValue($this->extractStringValue($content));
-        } else if ($content->startsWith(self::TYPE_OBJECT)) {
+        } else if ($content->startsWith(Node::TYPE_OBJECT)) {
             // todo :)
         } else {
             throw new UnknownTypeException($content->toString());
@@ -140,18 +134,16 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode): void
     {
-        // While it contains an opening bracket, there might be new properties
-        $matches = preg_split('/\[(\d+|\".+\")\]\=\>/', $content->trim()->toString(), -1, PREG_SPLIT_NO_EMPTY);
-        preg_match_all('/\[(\d+|\".+\")\]\=\>/', $content->trim()->toString(), $keysMatch);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*"\s)/U', $content->trimStart()->toString(), $matches);
+        preg_match_all('/\[(\d+|\".+\")]=>/U', $content->trim()->toString(), $keyMatches);
 
-        for ($i = 0; $i < count($matches); ++$i) {
-            $match = u($matches[$i])->trim();
-            $node = $this->processContent($match, $currentNode);
-            $node
-                ->setExtraData([
-                    // What if the property contains these tokens ?
-                    'propertyName' => u($keysMatch[0][$i])->after('[')->beforeLast(']=>')->toString()
-                ]);
+        for ($i = 0; $i < count($matches[0]); ++$i) {
+            $match = u($matches[0][$i])->trim();
+            $propertyNode = $this->processContent($match, $currentNode);
+            $propertyNode->addExtraData(
+                'propertyName',
+                u($keyMatches[0][$i])->after('[')->beforeLast(']=>')->toString()
+            );
         }
     }
 }
