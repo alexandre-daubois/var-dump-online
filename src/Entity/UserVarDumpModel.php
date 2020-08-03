@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Entity;
-
 
 class UserVarDumpModel
 {
@@ -16,17 +14,11 @@ class UserVarDumpModel
      */
     protected $submittedAt;
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     */
     public function setContent(string $content): void
     {
         $this->content = $content;
@@ -40,9 +32,6 @@ class UserVarDumpModel
         return $this->submittedAt;
     }
 
-    /**
-     * @param \DateTime $submittedAt
-     */
     public function setSubmittedAt(\DateTime $submittedAt): void
     {
         $this->submittedAt = $submittedAt;

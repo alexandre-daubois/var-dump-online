@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
 use App\Exception\UnknownTypeException;
-use Symfony\Component\String\UnicodeString;
-use Symfony\Component\VarDumper\VarDumper;
 use function Symfony\Component\String\u;
+use Symfony\Component\String\UnicodeString;
 
 class UserVarDumpModelFormatter
 {
@@ -34,8 +31,8 @@ class UserVarDumpModelFormatter
     }
 
     /**
-     * @param string $content
      * @param Node|null $currentNode
+     *
      * @throws UnknownTypeException
      */
     private function processContent(string $content, Node $currentNode)
@@ -51,20 +48,20 @@ class UserVarDumpModelFormatter
                 ->setDepth($currentNode->getDepth() + 1);
 
             $this->processProperties($this->extractProperties($content), $node);
-        } else if ($content->startsWith(Node::TYPE_FLOAT)) {
+        } elseif ($content->startsWith(Node::TYPE_FLOAT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
-        } else if ($content->startsWith(Node::TYPE_INT)) {
+        } elseif ($content->startsWith(Node::TYPE_INT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_INT, $content);
-        } else if ($content->startsWith(Node::TYPE_STRING)) {
+        } elseif ($content->startsWith(Node::TYPE_STRING)) {
             $node = new Node();
 
             $node
                 ->setType(Node::TYPE_STRING)
                 ->setExtraData([
-                    'length' => intval($this->extractValue(Node::TYPE_STRING, $content)->toString())
+                    'length' => intval($this->extractValue(Node::TYPE_STRING, $content)->toString()),
                 ])
                 ->setValue($this->extractStringValue($content, intval($node->getExtraData()['length'])));
-        } else if ($content->startsWith(Node::TYPE_OBJECT)) {
+        } elseif ($content->startsWith(Node::TYPE_OBJECT)) {
             $node = new Node();
             $node
                 ->setType(Node::TYPE_OBJECT)
@@ -82,11 +79,6 @@ class UserVarDumpModelFormatter
         return $node;
     }
 
-    /**
-     * @param string $type
-     * @param UnicodeString $content
-     * @return Node
-     */
     private function createPrimitiveNode(string $type, UnicodeString $content): Node
     {
         $node = new Node();
@@ -99,23 +91,13 @@ class UserVarDumpModelFormatter
         return $node;
     }
 
-    /**
-     * @param string $type
-     * @param UnicodeString $content
-     * @return UnicodeString
-     */
     private function extractValue(string $type, UnicodeString $content): UnicodeString
     {
         return $content
-            ->after($type . '(')
+            ->after($type.'(')
             ->before(')');
     }
 
-    /**
-     * @param UnicodeString $content
-     * @param int $length
-     * @return UnicodeString
-     */
     private function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
         $subString = $content
@@ -124,10 +106,6 @@ class UserVarDumpModelFormatter
         return u(substr($subString, 0, $length));
     }
 
-    /**
-     * @param UnicodeString $content
-     * @return UnicodeString
-     */
     private function extractProperties(UnicodeString $content): UnicodeString
     {
         return $content
@@ -136,8 +114,6 @@ class UserVarDumpModelFormatter
     }
 
     /**
-     * @param UnicodeString $content
-     * @param Node $currentNode
      * @throws UnknownTypeException
      */
     private function processProperties(UnicodeString $content, Node $currentNode): void

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Entity\Formatter;
-
 
 class Node
 {
@@ -24,7 +22,7 @@ class Node
     protected $value;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $depth;
 
@@ -48,86 +46,64 @@ class Node
         $this->children = [];
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return Node
-     */
     public function setType(string $type): Node
     {
         $this->type = $type;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     * @return Node
-     */
     public function setValue(string $value): Node
     {
         $this->value = $value;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getDepth(): int
     {
         return $this->depth;
     }
 
-    /**
-     * @param int $depth
-     * @return Node
-     */
     public function setDepth(int $depth): Node
     {
         $this->depth = $depth;
+
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getExtraData(): array
     {
         return $this->extraData;
     }
 
-    /**
-     * @param array $extraData
-     * @return Node
-     */
     public function setExtraData(array $extraData): Node
     {
         $this->extraData = $extraData;
+
         return $this;
     }
 
     /**
      * @param $key
      * @param $data
+     *
      * @return $this
      */
     public function addExtraData($key, $data): Node
     {
         $this->extraData[$key] = $data;
+
         return $this;
     }
 
@@ -147,29 +123,20 @@ class Node
         $this->children = $children;
     }
 
-    /**
-     * @param Node $node
-     * @return Node
-     */
     public function addChild(Node $node): Node
     {
         $node->setDepth($this->getDepth() + 1);
         $this->children[] = $node;
         $node->setParent($this);
+
         return $node;
     }
 
-    /**
-     * @return Node
-     */
     public function getParent(): Node
     {
         return $this->parent;
     }
 
-    /**
-     * @param Node $parent
-     */
     public function setParent(Node $parent): void
     {
         $this->parent = $parent;

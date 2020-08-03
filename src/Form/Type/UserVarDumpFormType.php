@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form\Type;
-
 
 use App\Entity\UserVarDumpModel;
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +21,7 @@ class UserVarDumpFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserVarDumpModel::class
+            'data_class' => UserVarDumpModel::class,
         ]);
     }
 }

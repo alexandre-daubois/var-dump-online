@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
@@ -17,8 +15,6 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="_home")
      *
-     * @param Request $request
-     * @param UserVarDumpModelFormatter $formatter
      * @return Response
      */
     public function home(Request $request, UserVarDumpModelFormatter $formatter)
@@ -27,7 +23,7 @@ class HomeController extends AbstractController
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
         $root = null;
 
-        if ($request->isMethod("POST")) {
+        if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -36,9 +32,9 @@ class HomeController extends AbstractController
             }
         }
 
-        return $this->render("home.html.twig", [
+        return $this->render('home.html.twig', [
             'form' => $form->createView(),
-            'nodes' => $root
+            'nodes' => $root,
         ]);
     }
 }
