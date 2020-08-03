@@ -6,7 +6,6 @@ use App\Entity\UserVarDump;
 use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
 use App\Service\UserVarDumpModelFormatter;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Constraints\Date;
-use Symfony\Component\VarDumper\VarDumper;
 
 class HomeController extends AbstractController
 {
@@ -37,8 +34,6 @@ class HomeController extends AbstractController
      * @Route("/shared/{token}", name="_shared")
      *
      * @param $token
-     * @param Request $request
-     * @param UserVarDumpModelFormatter $formatter
      */
     public function shared($token, Request $request, UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager)
     {
@@ -52,7 +47,7 @@ class HomeController extends AbstractController
 
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
-            'nodes' => $root
+            'nodes' => $root,
         ]);
     }
 
@@ -77,16 +72,15 @@ class HomeController extends AbstractController
             'html' => $this->renderView('format.html.twig', [
                     'form' => $form->createView(),
                     'nodes' => $root,
-                ])
+                ]),
         ]);
     }
 
     /**
      * @Route("/share", name="_share")
      *
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
      * @return JsonResponse
+     *
      * @throws \Exception
      */
     public function share(Request $request, EntityManagerInterface $entityManager)
@@ -110,7 +104,7 @@ class HomeController extends AbstractController
         }
 
         return new JsonResponse([
-            'link' => $this->generateUrl('_shared', ['token' => $dump->getToken()])
+            'link' => $this->generateUrl('_shared', ['token' => $dump->getToken()]),
         ]);
     }
 }

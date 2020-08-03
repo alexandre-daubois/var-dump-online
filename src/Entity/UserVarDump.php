@@ -1,14 +1,12 @@
 <?php
 
-
 namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserVarDump
- * @package App\Entity
+ * Class UserVarDump.
  *
  * @ORM\Entity()
  * @ORM\Table()
@@ -58,33 +56,21 @@ class UserVarDump
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     */
     public function setContent(string $content): void
     {
         $this->content = $content;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getSubmittedAt(): ?\DateTime
     {
         return $this->submittedAt;
     }
 
-    /**
-     * @param \DateTime|null $submittedAt
-     */
     public function setSubmittedAt(?\DateTime $submittedAt): void
     {
         $this->submittedAt = $submittedAt;

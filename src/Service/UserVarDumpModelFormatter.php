@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
 use App\Exception\UnknownTypeException;
-use Symfony\Component\VarDumper\VarDumper;
 use function Symfony\Component\String\u;
 use Symfony\Component\String\UnicodeString;
 
@@ -58,7 +57,7 @@ class UserVarDumpModelFormatter
         } elseif ($content->startsWith(Node::TYPE_NULL)) {
             $node = new Node();
             $node->setType(Node::TYPE_NULL);
-        } elseif($content->startsWith(Node::TYPE_RESOURCE)) {
+        } elseif ($content->startsWith(Node::TYPE_RESOURCE)) {
             $node = new Node();
             $node
                 ->setType(Node::TYPE_RESOURCE)
@@ -134,7 +133,7 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode, int $propertiesCount): void
     {
-        if ($propertiesCount === 0) {
+        if (0 === $propertiesCount) {
             return;
         }
 
