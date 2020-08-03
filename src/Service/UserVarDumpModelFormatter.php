@@ -127,12 +127,25 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode, int $propertiesCount): void
     {
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
-        preg_match_all('/\[(\d+|\".+\")]=>/U', $content->trim()->toString(), $keyMatches);
+        $content = $content->trim();
+        $sanitizedContent = $content->toString();
+
+        // Catch arrays content
+        preg_match('/((array\(\d+\))|object\(\d+\)) { (.*) }/', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
+
+        if (!empty($arrayContentMatches)) {
+            for ($i = $arrayContentMatches[3][1]; $i < strlen($arrayContentMatches[3][0]) + $arrayContentMatches[3][1]; ++$i) {
+                $sanitizedContent[$i] = '_';
+            }
+        }
+
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/\[(\d+|.+)]=>/U', $sanitizedContent, $keyMatches);
 
         for ($i = 0; $i < count($matches[0]) && $i < $propertiesCount; ++$i) {
             $offset = $matches[0][$i][1]; // Offset key thanks to PREG_OFFSET_CAPTURE
-            $value = substr($content->trim()->toString(), $offset);
+            $value = substr($content->toString(), $offset);
+
             $propertyNode = $this->processContent($value, $currentNode);
 
             $propertyNode->addExtraData(
