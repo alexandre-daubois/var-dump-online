@@ -63,7 +63,7 @@ class UserVarDumpModelFormatter
                 ->setExtraData([
                     'length' => intval($this->extractValue(Node::TYPE_STRING, $content)->toString())
                 ])
-                ->setValue($this->extractStringValue($content));
+                ->setValue($this->extractStringValue($content, intval($node->getExtraData()['length'])));
         } else if ($content->startsWith(Node::TYPE_OBJECT)) {
             $node = new Node();
             $node
@@ -113,13 +113,15 @@ class UserVarDumpModelFormatter
 
     /**
      * @param UnicodeString $content
+     * @param int $length
      * @return UnicodeString
      */
-    private function extractStringValue(UnicodeString $content): UnicodeString
+    private function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
-        return $content
-            ->after('"')
-            ->beforeLast('"');
+        $subString = $content
+            ->after('"');
+
+        return u(substr($subString, 0, $length));
     }
 
     /**
@@ -140,12 +142,14 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode): void
     {
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*"\s)/U', $content->trimStart()->toString(), $matches);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|\".+\")]=>/U', $content->trim()->toString(), $keyMatches);
 
         for ($i = 0; $i < count($matches[0]); ++$i) {
-            $match = u($matches[0][$i])->trim();
-            $propertyNode = $this->processContent($match, $currentNode);
+            $offset = $matches[0][$i][1]; // Offset key thanks to PREG_OFFSET_CAPTURE
+            $value = substr($content->trim()->toString(), $offset);
+            $propertyNode = $this->processContent($value, $currentNode);
+
             $propertyNode->addExtraData(
                 'propertyName',
                 u($keyMatches[0][$i])->after('[')->beforeLast(']=>')->toString()
