@@ -103,4 +103,10 @@ code {
 
 span.property-name {
     color: #9575CD !important;
+    border-left: 1px dotted #212121;
+    padding-left: 1em;
+}
+
+textarea {
+    font-family: 'Source Code Pro', monospace !important;
 }

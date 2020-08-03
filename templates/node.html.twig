@@ -19,7 +19,7 @@
         <span class="var-length">length: {{ node.extraData.length }}</span>
     {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
         <span class="var-type var-type-array small">{{ node.type }}</span>&nbsp;<span
-            class="var-length">length: {{ node.value }}</span>
+                class="var-length">length: {{ node.value }}</span>
         {% for child in node.children %}
             {% include 'node.html.twig' with {node: child} %}
         {% endfor %}

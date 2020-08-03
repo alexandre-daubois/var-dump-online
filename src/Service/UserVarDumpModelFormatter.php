@@ -47,7 +47,7 @@ class UserVarDumpModelFormatter
                 ->setValue($this->extractValue(Node::TYPE_ARRAY, $content))
                 ->setDepth($currentNode->getDepth() + 1);
 
-            $this->processProperties($this->extractProperties($content), $node);
+            $this->processProperties($this->extractProperties($content), $node, $node->getValue());
         } elseif ($content->startsWith(Node::TYPE_FLOAT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
         } elseif ($content->startsWith(Node::TYPE_BOOLEAN)) {
@@ -74,7 +74,8 @@ class UserVarDumpModelFormatter
                 ->setDepth($currentNode->getDepth() + 1);
 
             $node->addExtraData('internalId', $content->after('#')->before(' ')->toString());
-            $this->processProperties($this->extractProperties($content), $node);
+            $node->addExtraData('propertiesCount', $content->after('#')->after('(')->before(')')->toString());
+            $this->processProperties($this->extractProperties($content), $node, $node->getExtraData()['propertiesCount']);
         } else {
             throw new UnknownTypeException($content->toString());
         }
@@ -124,12 +125,12 @@ class UserVarDumpModelFormatter
     /**
      * @throws UnknownTypeException
      */
-    private function processProperties(UnicodeString $content, Node $currentNode): void
+    private function processProperties(UnicodeString $content, Node $currentNode, int $propertiesCount): void
     {
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|\".+\")]=>/U', $content->trim()->toString(), $keyMatches);
 
-        for ($i = 0; $i < count($matches[0]); ++$i) {
+        for ($i = 0; $i < count($matches[0]) && $i < $propertiesCount; ++$i) {
             $offset = $matches[0][$i][1]; // Offset key thanks to PREG_OFFSET_CAPTURE
             $value = substr($content->trim()->toString(), $offset);
             $propertyNode = $this->processContent($value, $currentNode);
