@@ -32,9 +32,6 @@ class HomeController extends AbstractController
             }
         }
 
-//        var_dump(new Response());
-//        die;
-
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
             'nodes' => $root,

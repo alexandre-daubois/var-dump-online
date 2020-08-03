@@ -134,6 +134,7 @@ class UserVarDumpModelFormatter
         preg_match('/((array\(\d+\))|object\(\d+\)) { (.*) }/', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
 
         if (!empty($arrayContentMatches)) {
+            // The third match group is the interesting one
             for ($i = $arrayContentMatches[3][1]; $i < strlen($arrayContentMatches[3][0]) + $arrayContentMatches[3][1]; ++$i) {
                 $sanitizedContent[$i] = '_';
             }
