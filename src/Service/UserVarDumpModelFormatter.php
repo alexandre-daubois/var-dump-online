@@ -50,8 +50,13 @@ class UserVarDumpModelFormatter
             $this->processProperties($this->extractProperties($content), $node);
         } elseif ($content->startsWith(Node::TYPE_FLOAT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
+        } elseif ($content->startsWith(Node::TYPE_BOOLEAN)) {
+            $node = $this->createPrimitiveNode(Node::TYPE_BOOLEAN, $content);
         } elseif ($content->startsWith(Node::TYPE_INT)) {
             $node = $this->createPrimitiveNode(Node::TYPE_INT, $content);
+        } elseif ($content->startsWith(Node::TYPE_NULL)) {
+            $node = new Node();
+            $node->setType(Node::TYPE_NULL);
         } elseif ($content->startsWith(Node::TYPE_STRING)) {
             $node = new Node();
 
@@ -98,6 +103,9 @@ class UserVarDumpModelFormatter
             ->before(')');
     }
 
+    /**
+     * We use `substr` to ensure we capture the whole string, even if it contains double quotes.
+     */
     private function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
         $subString = $content
@@ -118,7 +126,7 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode): void
     {
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)/U', $content->trimStart()->toString(), $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|\".+\")]=>/U', $content->trim()->toString(), $keyMatches);
 
         for ($i = 0; $i < count($matches[0]); ++$i) {

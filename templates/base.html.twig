@@ -2,101 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}VarDumpFormatter - Beautify your dumps online{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-        <style>
-            @font-face {
-                font-family: GoBoldItalic;
-                src: url(/fonts/Gobold%20Regular%20Italic.otf);
-            }
-
-            @font-face {
-                font-family: GoBoldItalicHollow;
-                src: url(/fonts/Gobold%20Hollow%20Italic.otf);
-            }
-
-            @font-face {
-                font-family: GoBoldLowplus;
-                src: url(/fonts/Gobold%20Lowplus.otf);
-            }
-
-            * {
-                font-family: 'Open Sans', sans-serif;
-            }
-
-            h1 {
-                font-family: GoBoldItalicHollow, sans-serif;
-            }
-
-            #main-title {
-                background-image: -webkit-gradient(linear, right top, left top, from(#fe5915), to(#ffad36));
-                background-image: linear-gradient(270deg, #fe5915, #ffad36);
-                -webkit-text-fill-color: transparent;
-                -webkit-background-clip: text;
-            }
-
-            .navbar-brand {
-                font-family: GoBoldItalic;
-            }
-
-            .nav-link {
-                font-family: GoBoldLowplus;
-            }
-
-            #result {
-                font-family: 'Source Code Pro', monospace;
-            }
-
-            .var-type {
-                border-radius: 5px;
-                background-color: #607D8B;
-                color: #FFFFFF;
-                padding: 2px 5px;
-            }
-
-            .var-value {
-                color: #FFA000;
-            }
-
-            .var-value-string {
-                color: #76FF03;
-            }
-
-            .var-length {
-                color: #BDBDBD;
-                font-style: italic;
-            }
-
-            #user_var_dump_form_content {
-                min-height: 250px;
-            }
-
-            #beautifier {
-                background-color: #F5F5F5;
-            }
-
-            #footer, #header {
-                background: rgb(16,16,16);
-                background: radial-gradient(circle, rgba(16,16,16,1) 0%, rgba(33,33,33,1) 100%);
-                color: #F5F5F5;
-            }
-
-            .navbar.bg-dark {
-                background-color: #101010 !important;
-                border-bottom: 1px solid #212121;
-            }
-
-            code {
-                color: #FFA000;
-                background-color: #212121;
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+        <link href="/css/home.css" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174246170-1"></script>
@@ -125,6 +39,12 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

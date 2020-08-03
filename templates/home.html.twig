@@ -3,7 +3,7 @@
 {% block body %}
     <div class="jumbotron jumbotron-fluid mb-0" id="header">
         <div class="container text-center">
-            <h1 class="display-4 mt-2 mb-5" id="main-title">VarDumpFormatter</h1>
+            <h1 class="display-4 mt-2 mb-5" id="main-title">VarDump Formatter</h1>
             <p class="lead"><code>var_dump</code> is a <a href="https://www.php.net/manual/en/function.var-dump.php">PHP standard method</a> that dumps a variable entirely and allows you to see its content.</p>
             <p class="lead">VarDumperFormatter.io beautifies this method's output for you.</p>
             <a class="btn btn-lg btn-warning mt-4" href="https://www.php.net/manual/en/function.var-dump.php">Learn more about it</a>
@@ -39,23 +39,18 @@
         {{ form_end(form) }}
 
         {% if nodes is not null %}
-            <div class="row">
-                <div class="col-12">
-                    <h2>Résultat</h2>
-                </div>
-                <div class="col-12" id="result">
-                    {% for node in nodes.children %}
-                        {% include 'node.html.twig' with {node: node} %}
-                    {% endfor %}
-                </div>
+            <div class="col py-3" id="result">
+                {% for node in nodes.children %}
+                    {% include 'node.html.twig' with {node: node} %}
+                {% endfor %}
             </div>
         {% endif %}
 
-        {% if nodes is not null %}
-            <h1>Dump of nodes</h1>
+{#        {% if nodes is not null %}#}
+{#            <h1>Dump of nodes</h1>#}
 
-            {{ dump(nodes) }}
-        {% endif %}
+{#            {{ dump(nodes) }}#}
+{#        {% endif %}#}
     </div>
     </div>
 
