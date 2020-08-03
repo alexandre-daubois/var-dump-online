@@ -1,0 +1,2 @@
+ambta_doctrine_encrypt:
+    encryptor_class: Halite

@@ -30,21 +30,21 @@
                 {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="col-6 my-3">
-                <button type="submit" class="btn btn-warning btn-block">Beautify it!</button>
+                <button id="beautify-btn" type="button" class="btn btn-warning btn-block" data-href="{{ url('_format') }}">Beautify it!</button>
             </div>
             <div class="col-6 my-3">
-                <button type="submit" class="btn btn-outline-warning btn-block">Share</button>
+                <button id="share-btn" type="button" data-href="{{ url('_share') }}" class="btn btn-outline-warning btn-block">Share</button>
             </div>
         </div>
         {{ form_end(form) }}
 
-        {% if nodes is not null %}
-            <div class="col py-3" id="result">
+        <div class="col py-3 collapse" id="result">
+            {% if nodes is defined %}
                 {% for node in nodes.children %}
                     {% include 'node.html.twig' with {node: node} %}
                 {% endfor %}
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
 {#        {% if nodes is not null %}#}
 {#            <h1>Dump of nodes</h1>#}
@@ -115,4 +115,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/home.js"></script>
 {% endblock %}
