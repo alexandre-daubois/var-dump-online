@@ -10,8 +10,8 @@ class Node
     const TYPE_STRING = 'string';
     const TYPE_OBJECT = 'object';
     const TYPE_BOOLEAN = 'bool';
+    const TYPE_RESOURCE = 'resource';
     const TYPE_NULL = 'NULL';
-    // @todo resource
     const TYPE_NONE = 'none';
 
     /**

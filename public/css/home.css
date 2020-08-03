@@ -71,6 +71,10 @@ h1 {
     font-style: italic;
 }
 
+.var-value-resource {
+    color: #F4511E !important;
+}
+
 #user_var_dump_form_content {
     min-height: 250px;
 }

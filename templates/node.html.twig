@@ -13,13 +13,20 @@
         <span class="var-type small">{{ node.type }}</span>&nbsp;<span class="var-value">{{ node.value }}</span>
     {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_NULL") %}
         <span class="var-value var-value-null">null</span>
+    {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_RESOURCE") %}
+        <span class="var-type small">{{ node.type }}</span>&nbsp;<span class="var-length">type:</span>&nbsp;<span
+            class="var-value var-value-resource">{{ node.value }}</span>&nbsp;<span
+            class="var-internal-id">#{{ node.extraData.internalId }}</span> <i class="material-icons text-primary"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="right"
+                                                                               title="Internal PHP identifier. Each object is identified by PHP with an ID (here, #{{ node.extraData.internalId }}). This will help you to know if two objects are in fact the same instance.">help</i>
     {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_STRING") %}
         <span class="var-type small">{{ node.type }}</span>&nbsp;<span
             class="var-value-string">{{ node.value }}</span>&nbsp;
         <span class="var-length">length: {{ node.extraData.length }}</span>
     {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
         <span class="var-type var-type-array small">{{ node.type }}</span>&nbsp;<span
-                class="var-length">length: {{ node.value }}</span>
+            class="var-length">length: {{ node.value }}</span>
         {% for child in node.children %}
             {% include 'node.html.twig' with {node: child} %}
         {% endfor %}

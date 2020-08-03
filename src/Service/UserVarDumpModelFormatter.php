@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
 use App\Exception\UnknownTypeException;
+use Symfony\Component\VarDumper\VarDumper;
 use function Symfony\Component\String\u;
 use Symfony\Component\String\UnicodeString;
 
@@ -57,6 +58,12 @@ class UserVarDumpModelFormatter
         } elseif ($content->startsWith(Node::TYPE_NULL)) {
             $node = new Node();
             $node->setType(Node::TYPE_NULL);
+        } elseif($content->startsWith(Node::TYPE_RESOURCE)) {
+            $node = new Node();
+            $node
+                ->setType(Node::TYPE_RESOURCE)
+                ->setValue($content->after('of type (')->before(')')->toString())
+                ->addExtraData('internalId', $content->after('resource(')->before(')')->toString());
         } elseif ($content->startsWith(Node::TYPE_STRING)) {
             $node = new Node();
 
@@ -127,20 +134,26 @@ class UserVarDumpModelFormatter
      */
     private function processProperties(UnicodeString $content, Node $currentNode, int $propertiesCount): void
     {
+        if ($propertiesCount === 0) {
+            return;
+        }
+
         $content = $content->trim();
         $sanitizedContent = $content->toString();
 
         // Catch arrays content
-        preg_match('/((array\(\d+\))|object\(\d+\)) { (.*) }/', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/((array\([1-9]+\))|object\(\d+\)) { (.*) }/U', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
 
         if (!empty($arrayContentMatches)) {
             // The third match group is the interesting one
-            for ($i = $arrayContentMatches[3][1]; $i < strlen($arrayContentMatches[3][0]) + $arrayContentMatches[3][1]; ++$i) {
-                $sanitizedContent[$i] = '_';
+            foreach ($arrayContentMatches[3] as $match) {
+                for ($i = $match[1]; $i < strlen($match[0]) + $match[1]; ++$i) {
+                    $sanitizedContent[$i] = '_';
+                }
             }
         }
 
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))|(resource\(\d+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|.+)]=>/U', $sanitizedContent, $keyMatches);
 
         for ($i = 0; $i < count($matches[0]) && $i < $propertiesCount; ++$i) {
