@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\VarDumper\VarDumper;
 
 class HomeController extends AbstractController
 {
@@ -41,10 +42,13 @@ class HomeController extends AbstractController
      */
     public function shared($token, Request $request, UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager)
     {
-        $form = $this->createForm(UserVarDumpFormType::class);
         /** @var UserVarDump $dump */
         $dump = $entityManager->getRepository(UserVarDump::class)->findOneBy(['token' => $token]);
-        $root = $formatter->format((new UserVarDumpModel())->setContent($dump->getContent()));
+        $model = (new UserVarDumpModel())
+            ->setContent($dump->getContent());
+        $root = $formatter->format($model);
+
+        $form = $this->createForm(UserVarDumpFormType::class, $model);
 
         return $this->render('home.html.twig', [
             'form' => $form->createView(),

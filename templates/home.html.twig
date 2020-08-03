@@ -38,7 +38,7 @@
         </div>
         {{ form_end(form) }}
 
-        <div class="col py-3 collapse" id="result">
+        <div class="col py-3 collapse {% if nodes is defined %}show{% endif %}" id="result">
             {% if nodes is defined %}
                 {% for node in nodes.children %}
                     {% include 'node.html.twig' with {node: node} %}
