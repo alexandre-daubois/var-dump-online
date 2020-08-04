@@ -64,8 +64,10 @@ class HomeController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-            // Todo limit user input size
-            $root = $formatter->format($userVarDumpModel);
+
+            if ($form->isValid()) {
+                $root = $formatter->format($userVarDumpModel);
+            }
         }
 
         return new JsonResponse([
@@ -92,13 +94,15 @@ class HomeController extends AbstractController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
-            $dump = new UserVarDump();
-            $dump->setSubmittedAt(new \DateTime('now'));
-            $dump->setContent($userVarDumpModel->getContent());
-            $dump->setToken(bin2hex(random_bytes(16)));
+            if ($form->isValid()) {
+                $dump = new UserVarDump();
+                $dump->setSubmittedAt(new \DateTime('now'));
+                $dump->setContent($userVarDumpModel->getContent());
+                $dump->setToken(bin2hex(random_bytes(16)));
 
-            $entityManager->persist($dump);
-            $entityManager->flush();
+                $entityManager->persist($dump);
+                $entityManager->flush();
+            }
         } else {
             throw new AccessDeniedException();
         }
