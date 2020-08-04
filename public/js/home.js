@@ -16,8 +16,9 @@ $(function() {
         $.post($(this).data('href'), {
             'user_var_dump_form[content]': $('#user_var_dump_form_content').val()
         }, function (data) {
-            $('#result').html(data.html);
-            $('#result').collapse('show');
+            $('#share-id-input-container').collapse('show');
+            $('#share-id-input').val("https://vardumpformatter.io" + data.link);
+            $('#share-id-input').focus(function() { $(this).select(); });
         });
     });
 });
