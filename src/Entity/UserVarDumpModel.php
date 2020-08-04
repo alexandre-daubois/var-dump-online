@@ -7,7 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserVarDumpModel
 {
     /**
-     * Maximum length of 128KB
+     * Maximum length of 128KB.
+     *
      * @var string
      * @Assert\Length(max="131072")
      */

@@ -43,8 +43,9 @@
                 <div class="col-6 my-3">
                     <button id="share-btn" type="button" data-href="{{ url('_share') }}"
                             class="btn btn-outline-warning btn-block" data-toggle="tooltip"
-                                                                               data-placement="top"
-                                                                               title="When sharing it, your dump will be saved in database. Your dump will be crypted, but be sure to avoid any sensitive information to be stored in our database.">Share
+                            data-placement="top"
+                            title="When sharing it, your dump will be saved in database. Your dump will be crypted, but be sure to avoid any sensitive information to be stored in our database.">
+                        Share
                     </button>
                 </div>
             </div>
@@ -68,12 +69,6 @@
                     {% endfor %}
                 {% endif %}
             </div>
-
-            {# {% if nodes is not null %} #}
-            {# <h1>Dump of nodes</h1> #}
-
-            {# {{ dump(nodes) }} #}
-            {# {% endif %} #}
         </div>
     </div>
 
