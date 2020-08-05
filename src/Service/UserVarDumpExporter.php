@@ -28,10 +28,13 @@ class UserVarDumpExporter
         $this->twig = $twig;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function export(Node $root, string $format): string
     {
         if (!\in_array($format, self::getSupportedFormats(), true)) {
-            throw new \Exception("Format is not supported (got ${$format})");
+            throw new \Exception('Format is not supported (got '.$format.')');
         }
 
         if (self::FORMAT_JSON === $format || self::FORMAT_XML === $format) {
@@ -41,6 +44,9 @@ class UserVarDumpExporter
         return $this->formatVardump($root->getChildren()[0]);
     }
 
+    /**
+     * @return string[]
+     */
     public static function getSupportedFormats(): array
     {
         return [
@@ -50,7 +56,12 @@ class UserVarDumpExporter
         ];
     }
 
-    private function formatVardump(Node $node): string
+    /**
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function formatVardump(Node $node): string
     {
         return $this->twig->render('export/node.txt.twig', ['node' => $node]);
     }

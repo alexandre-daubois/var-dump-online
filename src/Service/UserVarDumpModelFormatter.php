@@ -35,7 +35,7 @@ class UserVarDumpModelFormatter
      *
      * @throws UnknownTypeException
      */
-    private function processContent(string $content, Node $currentNode)
+    public function processContent(string $content, Node $currentNode)
     {
         $content = u($content);
         $node = null;
@@ -91,8 +91,12 @@ class UserVarDumpModelFormatter
         return $node;
     }
 
-    private function createPrimitiveNode(string $type, UnicodeString $content): Node
+    public function createPrimitiveNode(string $type, UnicodeString $content): Node
     {
+        if (!\in_array($type, [Node::TYPE_INT, Node::TYPE_FLOAT, Node::TYPE_BOOLEAN])) {
+            throw new \Exception('Format is not a primitive');
+        }
+
         $node = new Node();
         $node
             ->setType($type)
@@ -103,7 +107,7 @@ class UserVarDumpModelFormatter
         return $node;
     }
 
-    private function extractValue(string $type, UnicodeString $content): UnicodeString
+    public function extractValue(string $type, UnicodeString $content): UnicodeString
     {
         return $content
             ->after($type.'(')
@@ -113,7 +117,7 @@ class UserVarDumpModelFormatter
     /**
      * We use `substr` to ensure we capture the whole string, even if it contains double quotes.
      */
-    private function extractStringValue(UnicodeString $content, int $length): UnicodeString
+    public function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
         $subString = $content
             ->after('"');
@@ -121,7 +125,7 @@ class UserVarDumpModelFormatter
         return u(substr($subString, 0, $length));
     }
 
-    private function extractProperties(UnicodeString $content): UnicodeString
+    public function extractProperties(UnicodeString $content): UnicodeString
     {
         return $content
             ->after('{')
