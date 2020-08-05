@@ -69,6 +69,17 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            <div id="export-container" class="row collapse">
+                <div class="col-md-6 col-lg-2 offset-lg-8 mt-3">
+                    <select class="custom-select ml-auto" id="export-format-input">
+                        <option value="json" selected>JSON</option>
+                        <option value="xml">XML</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-lg-2 mt-3">
+                    <button id="export-btn" type="button" class="btn btn-primary btn-block" data-href="{{ url('_export', {format: '__format__'}) }}">Export</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -166,6 +177,27 @@
                 <div class="col-12">
                     <h2>VarDumpFormatter is brought to you by Alexandre Daubois</h2>
                     <p>Thank you for using it!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="export-result-container" class="px-3">
+                    </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="material-icons">close</i> Close</button>
+                    <button type="button" id="copy-export-btn" class="btn btn-primary"><i class="material-icons">content_copy</i> Copy</button>
                 </div>
             </div>
         </div>

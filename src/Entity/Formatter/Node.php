@@ -2,6 +2,13 @@
 
 namespace App\Entity\Formatter;
 
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * Class Node
+ * @package App\Entity\Formatter
+ * @Serializer\ExclusionPolicy("all")
+ */
 class Node
 {
     const TYPE_ARRAY = 'array';
@@ -16,11 +23,13 @@ class Node
 
     /**
      * @var string
+     * @Serializer\Expose()
      */
     protected $type = self::TYPE_NONE;
 
     /**
      * @var string
+     * @Serializer\Expose()
      */
     protected $value;
 
@@ -31,11 +40,13 @@ class Node
 
     /**
      * @var array for exemple, the size of an array, the internal PHP identifier of an object, etc
+     * @Serializer\Expose()
      */
     protected $extraData;
 
     /**
      * @var Node[]
+     * @Serializer\Expose()
      */
     protected $children;
 

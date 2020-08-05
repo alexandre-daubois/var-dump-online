@@ -11,6 +11,7 @@ class UserVarDumpModel
      *
      * @var string
      * @Assert\Length(max="131072")
+     * @Assert\NotBlank()
      */
     protected $content;
 

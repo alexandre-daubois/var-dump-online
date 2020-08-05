@@ -7,6 +7,7 @@ use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
 use App\Service\UserVarDumpModelFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,5 +111,39 @@ class HomeController extends AbstractController
         return new JsonResponse([
             'link' => $this->generateUrl('_shared', ['token' => $dump->getToken()]),
         ]);
+    }
+
+    /**
+     * @Route("/export/{format}", name="_export")
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function export(string $format, Request $request, SerializerInterface $serializer, UserVarDumpModelFormatter $formatter)
+    {
+        if (!\in_array($format, ['json', 'xml'], true)) {
+            throw new AccessDeniedException();
+        }
+
+        $userVarDumpModel = new UserVarDumpModel();
+        $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
+        $root = null;
+        $serializedResult = null;
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $root = $formatter->format($userVarDumpModel);
+                $serializedResult = $serializer->serialize($root->getChildren()[0], $format);
+            }
+        }
+
+        if (null === $root) {
+            throw new AccessDeniedException();
+        }
+
+        return new JsonResponse(['exportResult' => $serializedResult]);
     }
 }
