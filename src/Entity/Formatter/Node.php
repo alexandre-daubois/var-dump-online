@@ -5,8 +5,8 @@ namespace App\Entity\Formatter;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class Node
- * @package App\Entity\Formatter
+ * Class Node.
+ *
  * @Serializer\ExclusionPolicy("all")
  */
 class Node

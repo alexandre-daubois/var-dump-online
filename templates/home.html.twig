@@ -70,10 +70,11 @@
                 {% endif %}
             </div>
             <div id="export-container" class="row collapse">
-                <div class="col-md-6 col-lg-2 offset-lg-8 mt-3">
+                <div class="col-md-6 col-lg-3 offset-lg-7 mt-3">
                     <select class="custom-select ml-auto" id="export-format-input">
-                        <option value="json" selected>JSON</option>
-                        <option value="xml">XML</option>
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_JSON') }}" selected>JSON</option>
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_XML') }}">XML</option>
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_VARDUMP') }}">Formatted var_dump</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-lg-2 mt-3">
@@ -192,7 +193,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="export-result-container" class="px-3">
+                    <textarea id="export-result-container" readonly="readonly" class="px-3">
                     </textarea>
                 </div>
                 <div class="modal-footer">

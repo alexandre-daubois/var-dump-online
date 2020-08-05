@@ -1,7 +1,7 @@
 <div class="node">
     {% if node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") or node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_OBJECT") %}
         <span class="depth-spacer">
-        {% for i in 0..node.depth %}
+        {% for i in 0..node.depth-1 %}
             &nbsp;
         {% endfor %}
                 <span class="property-name">{{ node.extraData.propertyName }}</span> <i class="material-icons">chevron_right</i>

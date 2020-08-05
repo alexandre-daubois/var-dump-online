@@ -1,0 +1,23 @@
+{% if node.type == constant("App\\Entity\\Formatter\\Node::TYPE_INT") or node.type == constant("App\\Entity\\Formatter\\Node::TYPE_FLOAT") %}
+{{ node.type }}({{ node.value }})
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_BOOLEAN") %}
+{{ node.type }}({{ node.value }})
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_NULL") %}
+NULL
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_RESOURCE") %}
+{{ node.type }}({{ node.extraData.internalId }}) of type ({{ node.value }})
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_STRING") %}
+{{ node.type }}({{ node.extraData.length }}) "{{ node.value }}"
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") %}
+{{ node.type }}({{ node.value }}) {
+{% for child in node.children %}
+{% include 'export/node.txt.twig' with {node: child} %}
+{% endfor %}
+{% if node.depth > 1 %}{% for i in 0..node.depth-2 %}    {% endfor %}{% endif %}}
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_OBJECT") %}
+{{ node.type }}({{ node.value }})#{{ node.extraData.internalId }} ({{ node.extraData.propertiesCount }}) {
+{% for child in node.children %}
+{% include 'export/node.txt.twig' with {node: child} %}
+{% endfor %}
+{% if node.depth > 1 %}{% for i in 0..node.depth-2 %}    {% endfor %}{% endif %}}
+{% endif %}

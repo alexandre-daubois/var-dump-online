@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\UserVarDump;
 use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
+use App\Service\UserVarDumpExporter;
 use App\Service\UserVarDumpModelFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -120,9 +120,9 @@ class HomeController extends AbstractController
      *
      * @throws \Exception
      */
-    public function export(string $format, Request $request, SerializerInterface $serializer, UserVarDumpModelFormatter $formatter)
+    public function export(string $format, Request $request, UserVarDumpExporter $exporter, UserVarDumpModelFormatter $formatter)
     {
-        if (!\in_array($format, ['json', 'xml'], true)) {
+        if (!\in_array($format, UserVarDumpExporter::getSupportedFormats(), true)) {
             throw new AccessDeniedException();
         }
 
@@ -136,7 +136,7 @@ class HomeController extends AbstractController
 
             if ($form->isValid()) {
                 $root = $formatter->format($userVarDumpModel);
-                $serializedResult = $serializer->serialize($root->getChildren()[0], $format);
+                $serializedResult = $exporter->export($root, $format);
             }
         }
 

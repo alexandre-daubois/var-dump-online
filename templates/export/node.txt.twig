@@ -1,0 +1,5 @@
+{% if node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_ARRAY") or node.parent.type == constant("App\\Entity\\Formatter\\Node::TYPE_OBJECT") %}
+{% for i in 0..node.depth-2 %}    {% endfor %}[{{ node.extraData.propertyName }}]=> {% include 'export/node_value.txt.twig' with {node: node} %}
+{% else %}
+{% include 'export/node_value.txt.twig' with {node: node} %}
+{% endif %}
