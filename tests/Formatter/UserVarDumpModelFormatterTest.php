@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Exporter;
+namespace App\Tests\Formatter;
 
 use App\Entity\Formatter\Node;
 use App\Service\UserVarDumpModelFormatter;
