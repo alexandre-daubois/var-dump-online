@@ -16,7 +16,8 @@ class GlobalStatsManager
 
     public function getStats(string $key)
     {
-        $stats = $this->em->find(GlobalStats::class, $key);
+        /** @var GlobalStats $stats */
+        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
         if (null === $stats) {
             return null;
         }
@@ -26,7 +27,8 @@ class GlobalStatsManager
 
     public function setStats(string $key, int $value)
     {
-        $stats = $this->em->find(GlobalStats::class, $key);
+        /** @var GlobalStats $stats */
+        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
         if (null === $stats) {
             return null;
         }
@@ -38,7 +40,8 @@ class GlobalStatsManager
 
     public function incrementStat(string $key)
     {
-        $stats = $this->em->find(GlobalStats::class, $key);
+        /** @var GlobalStats $stats */
+        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
         if (null === $stats) {
             return null;
         }

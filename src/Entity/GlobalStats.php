@@ -18,8 +18,15 @@ class GlobalStats
     const EXPORTER_VARDUMP_KEY = 'EXPORTER_VARDUMP_KEY';
 
     /**
-     * @var string
+     * @var
      * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=256)
      */
     protected $key;
@@ -34,6 +41,22 @@ class GlobalStats
     {
         $this->key = $key;
         $this->value = 0;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getKey(): string
