@@ -20,7 +20,7 @@ class GlobalStats
     /**
      * @var string
      * @ORM\Id
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length="256")
      */
     protected $key;
 
