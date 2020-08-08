@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\GlobalStats;
 use App\Entity\UserVarDump;
 use App\Entity\UserVarDumpModel;
 use App\Form\Type\UserVarDumpFormType;
+use App\Service\GlobalStatsManager;
 use App\Service\UserVarDumpExporter;
 use App\Service\UserVarDumpModelFormatter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,6 +42,14 @@ class HomeController extends AbstractController
     {
         /** @var UserVarDump $dump */
         $dump = $entityManager->getRepository(UserVarDump::class)->findOneBy(['token' => $token]);
+
+        if (null === $dump) {
+            $this->redirectToRoute('_home');
+        }
+
+        $dump->setSeen($dump->getSeen() + 1);
+        $entityManager->flush();
+
         $model = (new UserVarDumpModel())
             ->setContent($dump->getContent());
         $root = $formatter->format($model);
@@ -57,7 +67,7 @@ class HomeController extends AbstractController
      *
      * @return Response
      */
-    public function format(Request $request, UserVarDumpModelFormatter $formatter)
+    public function format(Request $request, UserVarDumpModelFormatter $formatter, GlobalStatsManager $globalStatsManager, EntityManagerInterface $em)
     {
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
@@ -68,6 +78,8 @@ class HomeController extends AbstractController
 
             if ($form->isValid()) {
                 $root = $formatter->format($userVarDumpModel);
+                $globalStatsManager->incrementStat(GlobalStats::BEAUTIFIER_USE_KEY);
+                $em->flush();
             }
         }
 
@@ -120,7 +132,7 @@ class HomeController extends AbstractController
      *
      * @throws \Exception
      */
-    public function export(string $format, Request $request, UserVarDumpExporter $exporter, UserVarDumpModelFormatter $formatter)
+    public function export(string $format, Request $request, UserVarDumpExporter $exporter, UserVarDumpModelFormatter $formatter, EntityManagerInterface $em)
     {
         if (!\in_array($format, UserVarDumpExporter::getSupportedFormats(), true)) {
             throw new AccessDeniedException();
@@ -137,6 +149,7 @@ class HomeController extends AbstractController
             if ($form->isValid()) {
                 $root = $formatter->format($userVarDumpModel);
                 $serializedResult = $exporter->export($root, $format);
+                $em->flush();
             }
         }
 

@@ -41,6 +41,12 @@ class UserVarDump
     protected $token;
 
     /**
+     * @var
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    protected $seen = 0;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -90,5 +96,21 @@ class UserVarDump
     public function setToken($token): void
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSeen()
+    {
+        return $this->seen;
+    }
+
+    /**
+     * @param mixed $seen
+     */
+    public function setSeen($seen): void
+    {
+        $this->seen = $seen;
     }
 }

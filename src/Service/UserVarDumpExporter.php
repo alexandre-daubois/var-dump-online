@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Formatter\Node;
+use App\Entity\GlobalStats;
 use JMS\Serializer\SerializerInterface;
 use Twig\Environment;
 
@@ -22,10 +23,16 @@ class UserVarDumpExporter
      */
     protected $twig;
 
-    public function __construct(SerializerInterface $serializer, Environment $twig)
+    /**
+     * @var GlobalStatsManager
+     */
+    protected $globalStatsManager;
+
+    public function __construct(SerializerInterface $serializer, Environment $twig, GlobalStatsManager $globalStatsManager)
     {
         $this->serializer = $serializer;
         $this->twig = $twig;
+        $this->globalStatsManager = $globalStatsManager;
     }
 
     /**
@@ -37,9 +44,19 @@ class UserVarDumpExporter
             throw new \Exception('Format is not supported (got '.$format.')');
         }
 
-        if (self::FORMAT_JSON === $format || self::FORMAT_XML === $format) {
+        if (self::FORMAT_JSON === $format) {
+            $this->globalStatsManager->incrementStat(GlobalStats::EXPORTER_JSON_KEY);
+
             return $this->serializer->serialize($root->getChildren()[0], $format);
         }
+
+        if (self::FORMAT_XML === $format) {
+            $this->globalStatsManager->incrementStat(GlobalStats::EXPORTER_XML_KEY);
+
+            return $this->serializer->serialize($root->getChildren()[0], $format);
+        }
+
+        $this->globalStatsManager->incrementStat(GlobalStats::EXPORTER_VARDUMP_KEY);
 
         return $this->formatVardump($root->getChildren()[0]);
     }
