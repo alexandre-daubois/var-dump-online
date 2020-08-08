@@ -3,6 +3,7 @@
 namespace App\Tests\Exporter;
 
 use App\Entity\Formatter\Node;
+use App\Service\GlobalStatsManager;
 use App\Service\UserVarDumpExporter;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
@@ -16,8 +17,10 @@ class UserVarDumpExporterTest extends TestCase
         $twig = $this->createMock(Environment::class);
         /** @var SerializerInterface $serializer */
         $serializer = $this->createMock(SerializerInterface::class);
+        /** @var GlobalStatsManager $globalStatsManager */
+        $globalStatsManager = $this->createMock(GlobalStatsManager::class);
 
-        $exporter = new UserVarDumpExporter($serializer, $twig);
+        $exporter = new UserVarDumpExporter($serializer, $twig, $globalStatsManager);
 
         $this->expectExceptionMessage('Format is not supported (got invalid_format)');
         $exporter->export(new Node(), 'invalid_format');
@@ -31,6 +34,8 @@ class UserVarDumpExporterTest extends TestCase
 
         /** @var Environment $twig */
         $twig = $this->createMock(Environment::class);
+        /** @var GlobalStatsManager $globalStatsManager */
+        $globalStatsManager = $this->createMock(GlobalStatsManager::class);
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
@@ -39,7 +44,7 @@ class UserVarDumpExporterTest extends TestCase
         $serializer->expects($this->once())
             ->method('serialize');
 
-        $exporter = new UserVarDumpExporter($serializer, $twig);
+        $exporter = new UserVarDumpExporter($serializer, $twig, $globalStatsManager);
 
         $exporter->export($root, UserVarDumpExporter::FORMAT_JSON);
     }
@@ -52,6 +57,8 @@ class UserVarDumpExporterTest extends TestCase
 
         /** @var Environment $twig */
         $twig = $this->createMock(Environment::class);
+        /** @var GlobalStatsManager $globalStatsManager */
+        $globalStatsManager = $this->createMock(GlobalStatsManager::class);
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
@@ -60,7 +67,7 @@ class UserVarDumpExporterTest extends TestCase
         $serializer->expects($this->once())
             ->method('serialize');
 
-        $exporter = new UserVarDumpExporter($serializer, $twig);
+        $exporter = new UserVarDumpExporter($serializer, $twig, $globalStatsManager);
 
         $exporter->export($root, UserVarDumpExporter::FORMAT_XML);
     }
@@ -71,8 +78,15 @@ class UserVarDumpExporterTest extends TestCase
         $root->setDepth(0);
         $root->addChild(new Node());
 
+        /** @var Environment $twig */
+        $twig = $this->createMock(Environment::class);
+        /** @var SerializerInterface $serializer */
+        $serializer = $this->createMock(SerializerInterface::class);
+        /** @var GlobalStatsManager $globalStatsManager */
+        $globalStatsManager = $this->createMock(GlobalStatsManager::class);
+
         $exporter = $this->getMockBuilder(UserVarDumpExporter::class)
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$serializer, $twig, $globalStatsManager])
             ->setMethods(['formatVardump'])
             ->getMock();
 
