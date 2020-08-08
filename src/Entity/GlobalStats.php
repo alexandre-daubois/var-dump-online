@@ -27,13 +27,13 @@ class GlobalStats
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=256)
+     * @ORM\Column(type="string", length=256, name="stats_key")
      */
     protected $key;
 
     /**
      * @var
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="stats_value")
      */
     protected $value;
 
