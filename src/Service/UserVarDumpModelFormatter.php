@@ -145,7 +145,7 @@ class UserVarDumpModelFormatter
         $sanitizedContent = $content->toString();
 
         // Catch arrays content
-        preg_match_all('/((array\([1-9]+\))|object\(\d+\)) { (.*) }/U', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/((array\(\d+\))|object\(\d+\)) { (.*) }/U', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
 
         if (!empty($arrayContentMatches)) {
             // The third match group is the interesting one
