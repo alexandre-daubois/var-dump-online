@@ -144,19 +144,29 @@ class UserVarDumpModelFormatter
         $content = $content->trim();
         $sanitizedContent = $content->toString();
 
-        // Catch arrays content
-        preg_match_all('/((array\(\d+\))|object\(\d+\)) { (.*) }/U', $sanitizedContent, $arrayContentMatches, PREG_OFFSET_CAPTURE);
+        // Todo don't pay attention to brackets when in string context
+        $openingBracket = 0;
+        for ($i = 0; $i < strlen($sanitizedContent); ++$i) {
+            if ('{' === $sanitizedContent[$i]) {
+                ++$openingBracket;
 
-        if (!empty($arrayContentMatches)) {
-            // The third match group is the interesting one
-            foreach ($arrayContentMatches[3] as $match) {
-                for ($i = $match[1]; $i < strlen($match[0]) + $match[1]; ++$i) {
-                    $sanitizedContent[$i] = '_';
+                if (1 === $openingBracket) {
+                    continue;
                 }
+            } elseif ('}' === $sanitizedContent[$i]) {
+                --$openingBracket;
+
+                if (0 === $openingBracket) {
+                    continue;
+                }
+            }
+
+            if ($openingBracket >= 1) {
+                $sanitizedContent[$i] = '_';
             }
         }
 
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\))|(resource\(\d+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\)#(\d+) \(\d+\))|(resource\(\d+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|.+)]=>/U', $sanitizedContent, $keyMatches);
 
         for ($i = 0; $i < count($matches[0]) && $i < $propertiesCount; ++$i) {
