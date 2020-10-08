@@ -21,13 +21,6 @@ h1 {
     font-family: GoBoldItalicHollow, sans-serif;
 }
 
-#main-title {
-    background-image: -webkit-gradient(linear, right top, left top, from(#fe5915), to(#ffad36));
-    background-image: linear-gradient(270deg, #fe5915, #ffad36);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-}
-
 .navbar-brand {
     font-family: GoBoldItalic;
 }
@@ -95,10 +88,19 @@ h1 {
     vertical-align: middle;
 }
 
-#footer, #header {
+#footer {
     background: rgb(16,16,16);
     background: radial-gradient(circle, rgba(16,16,16,1) 0%, rgba(33,33,33,1) 100%);
     color: #F5F5F5;
+}
+
+.card {
+    background: radial-gradient(circle, rgba(16,16,16,1) 0%, rgba(33,33,33,1) 100%);
+    color: #F5F5F5;
+}
+
+#header {
+    background: white;
 }
 
 .navbar.bg-dark {
@@ -107,10 +109,11 @@ h1 {
 }
 
 code {
-    color: #FFA000;
-    background-color: #212121;
+    /*color: #FFA000;*/
+    /*background-color: #212121;*/
     padding-left: 5px;
     padding-right: 5px;
+    color: initial;
 }
 
 span.property-name {
