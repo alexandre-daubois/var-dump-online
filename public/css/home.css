@@ -49,10 +49,9 @@ h1 {
 
 .var-type {
     border-radius: 5px;
-    background-color: #78909C;
-    color: #FFFFFF;
+    border: 1px dotted #F4511E;
+    color: #F4511E;
     padding: 2px 5px;
-    font-weight: bold;
 }
 
 .var-value {
@@ -64,7 +63,7 @@ h1 {
 }
 
 .var-value-string {
-    color: #757575;
+    color: #5C6BC0;
 }
 
 .var-length {
@@ -117,11 +116,21 @@ code {
 }
 
 span.property-name {
-    color: #9575CD !important;
+    color: #78909C !important;
     border-left: 1px dotted #212121;
     padding-left: 1em;
 }
 
 textarea {
     font-family: 'Source Code Pro', monospace !important;
+}
+
+.node-line {
+    transition: background-color 100ms;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+.node-line:hover {
+    background-color: #FFF8E1;
 }
