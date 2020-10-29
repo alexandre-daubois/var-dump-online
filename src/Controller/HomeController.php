@@ -27,9 +27,11 @@ class HomeController extends AbstractController
     public function home(Request $request, UserVarDumpModelFormatter $formatter)
     {
         $form = $this->createForm(UserVarDumpFormType::class);
+        $stat = $this->getDoctrine()->getRepository(GlobalStats::class)->findOneBy(['key' => GlobalStats::BEAUTIFIER_USE_KEY]);
 
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
+            'dumpsCount' => $stat->getValue(),
         ]);
     }
 

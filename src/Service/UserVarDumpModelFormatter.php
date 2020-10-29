@@ -144,7 +144,7 @@ class UserVarDumpModelFormatter
         $content = $content->trim();
         $sanitizedContent = $content->toString();
 
-        // Todo don't pay attention to brackets when in string context
+        // Todo don't pay attention to brackets when in string context (to crash it : add one opening bracket without its closing one)
         $openingBracket = 0;
         for ($i = 0; $i < strlen($sanitizedContent); ++$i) {
             if ('{' === $sanitizedContent[$i]) {
