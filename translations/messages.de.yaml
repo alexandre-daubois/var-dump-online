@@ -1,0 +1,40 @@
+home:
+    lead:
+        what_is_var_dump: '<code>var_dump</code> ist eine <a href="https://www.php.net/manual/en/function.var-dump.php">Standard-PHP-Methode</a>, die eine Variable vollständig ausgibt und es Ihnen ermöglicht, ihren Inhalt zu sehen.'
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io verschönert die Ausgabe dieser Methode für Sie, wie sie es bereits für %dumpsCount% var_dumps getan hat."
+        beautify: 'Verschönern Sie'
+    share:
+        tooltip: 'Wenn Sie es freigeben, wird Ihr Dump in der Datenbank gespeichert. Ihr Dump wird verschlüsselt, aber achten Sie darauf, dass keine sensiblen Informationen in unserer Datenbank gespeichert werden.'
+        link: 'Link zum Teilen'
+        btn: 'Teilen'
+    export:
+        btn: Exportieren
+        format:
+            json: JSON
+            xml: XML
+            formatted: Formatierter var_dump
+    btn:
+        learn_more: 'Erfahren Sie mehr darüber'
+        beautify_it: 'Verschönern Sie es!'
+    form:
+        placeholder: 'Fügen Sie Ihre var_dump-Ausgabe hier ein'
+    alert:
+        warning:
+            paste_with_caution: 'Fügen Sie Ihren Dump mit Vorsicht ein, er könnte sensible Informationen enthalten! <strong>Wir speichern Ihr Dump nicht </strong>, es sei denn, Sie fragen ausdrücklich danach, wenn Sie es freigeben.'
+    tools:
+        title: 'Werkzeuge, um dies offline zu tun'
+        description: 'Es gibt viele Werkzeuge, um dies direkt beim Dumping Ihrer Variablen in Ihrem Code zu tun.'
+        xdebug:
+            title: 'Xdebug'
+            description: 'Xdebug ist eine Erweiterung für PHP zur Unterstützung bei der Fehlersuche und Entwicklung. Unter anderem erlaubt Ihnen diese Erweiterung, Ihre var_dump-Methode zu aktualisieren, um Ihre Dumps übersichtlich darzustellen, zum Beispiel mit Syntax-Highlighting und Einrückung.'
+            btn: 'Erfahren Sie mehr über Xdebug'
+        vardumper:
+            title: "Symfony's VarDumper"
+            description: 'Wenn Sie an einem Symfony-Projekt arbeiten, kennen Sie wahrscheinlich den VarDumper. Dieses Werkzeug ist eine Version von var_dump unter Steroiden, das zusätzlich zum Syntax-Highlighting das Entfalten und Falten Ihrer Objekte und Arrays erlaubt, wie wenn Sie Code-Blöcke in Ihrer Lieblings-IDE falten.'
+            btn: 'Erfahren Sie mehr über VarDumper'
+    footer:
+        brought_to_you_by: "für Sie zusammengestellt von"
+    modal:
+        title: "Ergebnis exportieren"
+        close: "Schließen"
+        copy: "Kopieren"

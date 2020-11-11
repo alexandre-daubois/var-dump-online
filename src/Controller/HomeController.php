@@ -17,10 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Class HomeController
+ * @package App\Controller
+ *
+ * @Route("/{_locale}", requirements={"_locale": "en|fr|es|de"}, defaults={"_locale":"en"})
+ */
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="_home")
+     * @Route(name="_home")
      *
      * @return Response
      */
@@ -58,9 +64,12 @@ class HomeController extends AbstractController
 
         $form = $this->createForm(UserVarDumpFormType::class, $model);
 
+        $stat = $this->getDoctrine()->getRepository(GlobalStats::class)->findOneBy(['key' => GlobalStats::BEAUTIFIER_USE_KEY]);
+
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
             'nodes' => $root,
+            'dumpsCount' => $stat->getValue(),
         ]);
     }
 

@@ -1,0 +1,40 @@
+home:
+    lead:
+        what_is_var_dump: '<code>var_dump</code> es un <a href="https://www.php.net/manual/en/function.var-dump.php">método estándar de PHP</a> que vuelca una variable completamente y permite ver su contenido.'
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io  embellece la salida de este método para usted, como ya lo hizo para %dumpsCount% var_dumps."
+        beautify: 'Embellecer'
+    share:
+        tooltip: 'Cuando lo comparta, su volcado se guardará en la base de datos. Su volcado será encriptado, pero asegúrese de evitar que cualquier información sensible sea almacenada en nuestra base de datos.'
+        link: 'Compartir enlace'
+        btn: 'Comparte'
+    export:
+        btn: Exporta
+        format:
+            json: JSON
+            xml: XML
+            formatted: var_dump formateado
+    btn:
+        learn_more: 'Aprende más sobre ello'
+        beautify_it: 'Embellécelo'
+    form:
+        placeholder: 'Pegue la salida de su var_dump aquí'
+    alert:
+        warning:
+            paste_with_caution: 'Pegue su basurero con precaución, ¡podría contener información sensible! <strong>No guardamos tu dump</strong>, a menos que lo pidas explícitamente cuando lo compartas.'
+    tools:
+        title: 'Herramientas para hacer esto fuera de línea'
+        description: 'Existe un montón de herramientas para hacer esto directamente al volcar sus variables en su código.'
+        xdebug:
+            title: 'Xdebug'
+            description: 'Xdebug es una extensión para PHP para ayudar con la depuración y el desarrollo. Entre otras cosas, esta extensión le permite actualizar su método var_dump para mostrar claramente sus var_dumps, con resaltado de sintaxis e indentación por ejemplo.'
+            btn: 'Aprende más sobre Xdebug'
+        vardumper:
+            title: "Symfony's VarDumper"
+            description: 'Si trabajas en un proyecto de Symfony, probablemente conozcas el VarDumper. Esta herramienta es una versión de var_dump bajo esteroides, que además de resaltar la sintaxis, te permite desplegar y plegar tus objetos y matrices, como cuando pliegas bloques de código en tu IDE favorito.'
+            btn: 'Aprende más sobre VarDumper'
+    footer:
+        brought_to_you_by: "traído a usted por"
+    modal:
+        title: "Resultado de la exportación"
+        close: "Cerrar"
+        copy: "Copia"

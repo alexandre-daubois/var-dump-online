@@ -4,12 +4,10 @@
     <div class="jumbotron jumbotron-fluid mb-0" id="header">
         <div class="container text-center">
             <img class="img-fluid my-3" src="/logo_white_background.jpg">
-            <p class="lead"><code>var_dump</code> is a <a href="https://www.php.net/manual/en/function.var-dump.php">standard
-                    PHP
-                    method</a> that dumps a variable entirely and allows you to see its content.</p>
-            <p class="lead">VarDumperFormatter.io beautifies this method's output for you, like it already did for {{ dumpsCount }} var_dumps.</p>
-            <a class="btn btn-lg btn-outline-warning mt-4" href="https://www.php.net/manual/en/function.var-dump.php">Learn more
-                about it</a>
+            <p class="lead">{{ 'home.lead.what_is_var_dump'|trans|raw }}</p>
+            <p class="lead">{{ 'home.lead.what_is_var_dump_formatter_io'|trans({'%dumpsCount%': dumpsCount}) }}</p>
+            <a class="btn btn-lg btn-outline-warning mt-4"
+               href="https://www.php.net/manual/en/function.var-dump.php">{{ 'home.btn.learn_more'|trans }}</a>
         </div>
     </div>
 
@@ -17,15 +15,14 @@
         <div class="container py-5">
             <div class="row">
                 <div class="col">
-                    <div class="alert alert-warning">Paste your dump with caution, it could contain sensitive
-                        information! <strong>We do not store your dump</strong>, unless you explicitly ask for it when
-                        you share it.
+                    <div class="alert alert-warning">
+                        {{ 'home.alert.warning.paste_with_caution'|trans|raw }}
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <h2>Beautify</h2>
+                    <h2>{{ 'home.lead.beautify'|trans }}</h2>
                 </div>
             </div>
 
@@ -33,19 +30,19 @@
             <div class="row">
                 <div class="col-12">
                     {{ form_errors(form.content, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder':'Paste your var_dump output here'}}) }}
+                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'home.form.placeholder'|trans}}) }}
                 </div>
                 <div class="col-6 my-3">
                     <button id="beautify-btn" type="button" class="btn btn-warning btn-block"
-                            data-href="{{ url('_format') }}">Beautify it!
+                            data-href="{{ url('_format') }}">{{ 'home.btn.beautify_it'|trans }}
                     </button>
                 </div>
                 <div class="col-6 my-3">
                     <button id="share-btn" type="button" data-href="{{ url('_share') }}"
                             class="btn btn-outline-warning btn-block" data-toggle="tooltip"
                             data-placement="top"
-                            title="When sharing it, your dump will be saved in database. Your dump will be crypted, but be sure to avoid any sensitive information to be stored in our database.">
-                        Share
+                            title="{{ 'home.share.tooltip'|trans }}">
+                        {{ 'home.share.btn'|trans }}
                     </button>
                 </div>
             </div>
@@ -55,7 +52,8 @@
                 <div class="col-12">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3"><i class="material-icons">share</i>&nbsp;Share link</span>
+                            <span class="input-group-text" id="basic-addon3"><i
+                                        class="material-icons">share</i>&nbsp;{{ 'home.share.link'|trans }}</span>
                         </div>
                         <input class="form-control" id="share-id-input" aria-describedby="basic-addon3">
                     </div>
@@ -72,17 +70,17 @@
             <div id="export-container" class="row collapse {% if nodes is defined %}show{% endif %}">
                 <div class="col-md-6 col-lg-3 offset-lg-7 mt-3">
                     <select class="custom-select ml-auto" id="export-format-input">
-                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_JSON') }}" selected>JSON
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_JSON') }}"
+                                selected>{{ 'home.export.format.json'|trans }}
                         </option>
-                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_XML') }}">XML</option>
-                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_VARDUMP') }}">Formatted
-                            var_dump
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_XML') }}">{{ 'home.export.format.xml'|trans }}</option>
+                        <option value="{{ constant('App\\Service\\UserVarDumpExporter::FORMAT_VARDUMP') }}">{{ 'home.export.format.formatted'|trans }}
                         </option>
                     </select>
                 </div>
                 <div class="col-md-6 col-lg-2 mt-3">
                     <button id="export-btn" type="button" class="btn btn-primary btn-block"
-                            data-href="{{ url('_export', {format: '__format__'}) }}">Export
+                            data-href="{{ url('_export', {format: '__format__'}) }}">{{ 'home.export.btn'|trans }}
                     </button>
                 </div>
             </div>
@@ -92,28 +90,23 @@
     <div class="jumbotron jumbotron-fluid mb-0">
         <div class="container text-center">
             <img class="img-fluid mb-5" src="/favicon.png" width="80px">
-            <h4 class="display-5 mb-3 text-muted">Tools to do this offline</h4>
-            <p class="lead mb-4 pb-3">It exists plenty of tools to do this directly when dumping your variables in your
-                code.</p>
+            <h4 class="display-5 mb-3 text-muted">{{ 'home.tools.title'|trans }}</h4>
+            <p class="lead mb-4 pb-3">{{ 'home.tools.description'|trans|raw }}</p>
             <div class="card-deck">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5 class="card-title mb-5">Xdebug</h5>
-                        <p class="card-text">Xdebug is an extension for PHP to assist with debugging and development.
-                            Among other things, this extension allows you to update your var_dump method to
-                            clearly display your dumps, with syntax highlighting and indentation for example.</p>
-                        <a href="https://xdebug.org/" class="btn btn-link btn-sm">Learn more about Xdebug</a>
+                        <h5 class="card-title mb-5">{{ 'home.tools.xdebug.title'|trans }}</h5>
+                        <p class="card-text">{{ 'home.tools.xdebug.description'|trans|raw }}</p>
+                        <a href="https://xdebug.org/"
+                           class="btn btn-link btn-sm">{{ 'home.tools.xdebug.btn'|trans }}</a>
                     </div>
                 </div>
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5 class="card-title mb-5">Symfony's VarDumper</h5>
-                        <p class="card-text">If you work on a Symfony project, you probably know the VarDumper. This
-                            tool is a version of var_dump under steroids, which in addition to syntax
-                            highlighting allows you to unfold and fold your objects and arrays, like when you fold
-                            blocks of code in your favorite IDE.</p>
+                        <h5 class="card-title mb-5">{{ 'home.tools.vardumper.title'|trans }}</h5>
+                        <p class="card-text">{{ 'home.tools.vardumper.description'|trans }}</p>
                         <a href="https://symfony.com/doc/current/components/var_dumper.html"
-                           class="btn btn-link btn-sm">Learn more about VarDumper</a>
+                           class="btn btn-link btn-sm">{{ 'home.tools.vardumper.btn'|trans }}</a>
                     </div>
                 </div>
             </div>
@@ -127,7 +120,9 @@
                     <img class="img-fluid" src="/white_logo_transparent_background.png">
                 </div>
                 <div class="col-12">
-                    <h4>brought to you by <a target="_blank" href="https://www.linkedin.com/in/alexandre-daubois/">Alexandre Daubois</a></h4>
+                    <h4>{{ 'home.footer.brought_to_you_by'|trans }} <a target="_blank"
+                                                                       href="https://www.linkedin.com/in/alexandre-daubois/">Alexandre
+                            Daubois</a></h4>
                 </div>
             </div>
         </div>
@@ -137,7 +132,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exportModalLabel">Export result</h5>
+                    <h5 class="modal-title" id="exportModalLabel">{{ 'home.modal.title'|trans }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -148,10 +143,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i
-                                class="material-icons">close</i> Close
+                                class="material-icons">close</i> {{ 'home.modal.close'|trans }}
                     </button>
                     <button type="button" id="copy-export-btn" class="btn btn-primary"><i class="material-icons">content_copy</i>
-                        Copy
+                        {{ 'home.modal.copy'|trans }}
                     </button>
                 </div>
             </div>

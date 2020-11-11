@@ -1,0 +1,40 @@
+home:
+    lead:
+        what_is_var_dump: '<code>var_dump</code> is a <a href="https://www.php.net/manual/en/function.var-dump.php">standard PHP method</a> that dumps a variable entirely and allows you to see its content.'
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io beautifies this method's output for you, like it already did for %dumpsCount% var_dumps."
+        beautify: 'Beautify'
+    share:
+        tooltip: 'When sharing it, your dump will be saved in database. Your dump will be encrypted, but be sure to avoid any sensitive information to be stored in our database.'
+        link: 'Share link'
+        btn: 'Share'
+    export:
+        btn: Export
+        format:
+            json: JSON
+            xml: XML
+            formatted: Formatted var_dump
+    btn:
+        learn_more: 'Learn more about it'
+        beautify_it: 'Beautify it!'
+    form:
+        placeholder: 'Paste your var_dump output here'
+    alert:
+        warning:
+            paste_with_caution: 'Paste your dump with caution, it could contain sensitive information! <strong>We do not store your dump</strong>, unless you explicitly ask for it when you share it.'
+    tools:
+        title: 'Tools to do this offline'
+        description: 'It exists plenty of tools to do this directly when dumping your variables in your code.'
+        xdebug:
+            title: 'Xdebug'
+            description: 'Xdebug is an extension for PHP to assist with debugging and development. Among other things, this extension allows you to update your var_dump method to clearly display your dumps, with syntax highlighting and indentation for example.'
+            btn: 'Learn more about Xdebug'
+        vardumper:
+            title: "Symfony's VarDumper"
+            description: 'If you work on a Symfony project, you probably know the VarDumper. This tool is a version of var_dump under steroids, which in addition to syntax highlighting allows you to unfold and fold your objects and arrays, like when you fold blocks of code in your favorite IDE.'
+            btn: 'Learn more about VarDumper'
+    footer:
+        brought_to_you_by: "brought to you by"
+    modal:
+        title: "Export result"
+        close: "Close"
+        copy: "Copy"

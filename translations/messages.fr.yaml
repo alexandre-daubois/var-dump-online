@@ -1,0 +1,40 @@
+home:
+    lead:
+        what_is_var_dump: "<code>var_dump</code> est une <a href='https://www.php.net/manual/en/function.var-dump.php'>méthode standard de PHP</a> affichant l'intégralité du contenu d'une variable."
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io met en forme la sortie de cette méthode pour vous, comme il l'a déjà fait pour %dumpsCount% var_dumps."
+        beautify: 'Embellir'
+    share:
+        tooltip: "En le partageant, votre dump sera enregistré dans notre base de données. Le dump sera chiffré, mais évitez d'inclure des informations sensibles dedans."
+        link: Lien de partage
+        btn: Partager
+    export:
+        btn: Exporter
+        format:
+            json: JSON
+            xml: XML
+            formatted: var_dump formatté
+    btn:
+        learn_more: 'En savoir plus'
+        beautify_it: 'Embellir!'
+    form:
+        placeholder: 'Collez la sortie de votre var_dump ici'
+    alert:
+        warning:
+            paste_with_caution: "Collez votre sortie de var_dump avec précaution, il se pourrait qu'il contienne des informations sensibles. <strong>Nous n'enregistrons pas votre sortie de var_dump</strong>, à moins que vous le demandiez explicitement lorsque vous le partagez."
+    tools:
+        title: 'Les outils pour faire la même chose hors-ligne'
+        description: "Il existe une multitude d'outils pour faire cela directement lorsque vous <em>dumpez</em> vos variables dans votre code."
+        xdebug:
+            title: 'Xdebug'
+            description: "Xdebug est une extension PHP pour vous aider au debug et au développement. Entre autres choses, cette extension met à jour votre méthode var_dump pour afficher vos <em>dumps</em> bien plus clairement, avec de la coloration syntaxique et de l'indentation, par exemple."
+            btn: 'En savoir plus sur Xdebug'
+        vardumper:
+            title: "VarDumper de Symfony"
+            description: 'Si vous travaillez sur un projet Symfony, vous connaissez sûrement VarDumper. Cet outil est une version de var_dump sous stéroïdes, qui, en plus de la coloration syntaxique, vous apporte la possibilité de replier et déplier les éléments, comme des blocs de code dans votre IDE préféré. Très pratique pour les objets et tableaux profonds.'
+            btn: 'En savoir plus sur VarDumper'
+    footer:
+        brought_to_you_by: "créé par"
+    modal:
+        title: "Résultat de l'export"
+        close: "Fermer"
+        copy: "Copier"
