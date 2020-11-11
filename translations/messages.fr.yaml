@@ -16,6 +16,7 @@ home:
     btn:
         learn_more: 'En savoir plus'
         beautify_it: 'Embellir!'
+        contact_us: "Contactez nous"
     form:
         placeholder: 'Collez la sortie de votre var_dump ici'
     alert:

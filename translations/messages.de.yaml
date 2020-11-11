@@ -16,6 +16,7 @@ home:
     btn:
         learn_more: 'Erfahren Sie mehr darüber'
         beautify_it: 'Verschönern Sie es!'
+        contact_us: 'Kontakt'
     form:
         placeholder: 'Fügen Sie Ihre var_dump-Ausgabe hier ein'
     alert:
