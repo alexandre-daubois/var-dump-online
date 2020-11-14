@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Class HomeController
  * @package App\Controller
  *
- * @Route("/{_locale}", requirements={"_locale": "en|fr|es|de"}, defaults={"_locale":"en"})
+ * @Route("/{_locale}", requirements={"_locale": "en|fr|es|de|it|nl"}, defaults={"_locale":"en"})
  */
 class HomeController extends AbstractController
 {
@@ -126,6 +126,8 @@ class HomeController extends AbstractController
 
                 $entityManager->persist($dump);
                 $entityManager->flush();
+            } else {
+                throw new AccessDeniedException();
             }
         } else {
             throw new AccessDeniedException();

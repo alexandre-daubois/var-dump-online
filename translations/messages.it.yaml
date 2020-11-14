@@ -1,0 +1,41 @@
+home:
+    lead:
+        what_is_var_dump: '<code>var_dump</code> è un <a href="https://www.php.net/manual/en/function.var-dump.php">metodo standard PHP</a> che scarica interamente una variabile e permette di vederne il contenuto.'
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io abbellisce il risultato di questo metodo per voi, come ha già fatto per %dumpsCount% var_dumps."
+        beautify: 'Abbellire'
+    share:
+        tooltip: 'Quando lo condividete, il vostro dump sarà salvato nel database. Il vostro dump sarà criptato, ma assicuratevi di evitare che qualsiasi informazione sensibile venga memorizzata nel nostro database.'
+        link: 'Link di condivisione'
+        btn: 'Condividi'
+    export:
+        btn: Esportare
+        format:
+            json: JSON
+            xml: XML
+            formatted: Var_dump formattato
+    btn:
+        learn_more: 'Per saperne di più'
+        beautify_it: 'Abbellirlo!'
+        contact_us: 'Contattateci'
+    form:
+        placeholder: 'Incolla qui il tuo output var_dump'
+    alert:
+        warning:
+            paste_with_caution: 'Incolla la tua discarica con cautela, potrebbe contenere informazioni sensibili! <strong>Non conserviamo la tua discarica</strong>, a meno che tu non lo chieda esplicitamente quando la condividi.'
+    tools:
+        title: 'Strumenti per farlo offline'
+        description: 'Esistono molti strumenti per farlo direttamente quando si scaricano le variabili nel codice.'
+        xdebug:
+            title: 'Xdebug'
+            description: "Xdebug è un'estensione per PHP per aiutare il debug e lo sviluppo. Tra le altre cose, questa estensione permette di aggiornare il metodo var_dump per visualizzare chiaramente i dump, con l'evidenziazione della sintassi e l'indentazione per esempio."
+            btn: 'Per saperne di più su Xdebug'
+        vardumper:
+            title: "VarDumper di Symfony"
+            description: "Se si lavora su un progetto Symfony, probabilmente si conosce il VarDumper. Questo strumento è una versione di var_dump sotto steroidi, che oltre all'evidenziazione della sintassi permette di dispiegare e piegare gli oggetti e gli array, come quando si piegano blocchi di codice nel proprio IDE preferito."
+            btn: 'Per saperne di più su VarDumper'
+    footer:
+        brought_to_you_by: "portato a voi da"
+    modal:
+        title: "Risultato dell'esportazione"
+        close: "Chiudere"
+        copy: "Copia"

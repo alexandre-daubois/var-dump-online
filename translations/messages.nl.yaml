@@ -1,0 +1,41 @@
+home:
+    lead:
+        what_is_var_dump: '<code>var_dump</code> is een <a href="https://www.php.net/manual/en/function.var-dump.php">standaard PHP-methode</a> die een variabele volledig dumpt en u de inhoud ervan laat zien.'
+        what_is_var_dump_formatter_io: "VarDumperFormatter.io verfraait de output van deze methode voor u, zoals het al deed voor %dumpsCount% var_dumps."
+        beautify: 'Verfraai'
+    share:
+        tooltip: 'Bij het delen wordt je dump opgeslagen in de database. Uw dump zal worden gecodeerd, maar zorg ervoor dat er geen gevoelige informatie wordt opgeslagen in onze database.'
+        link: 'Deelverbinding'
+        btn: 'Deel'
+    export:
+        btn: Exporteer
+        format:
+            json: JSON
+            xml: XML
+            formatted: Geformatteerde var_dump
+    btn:
+        learn_more: 'Lees er meer over'
+        beautify_it: 'Verfraai het!'
+        contact_us: 'Contacteer ons'
+    form:
+        placeholder: 'Plak hier uw var_dump uitvoer'
+    alert:
+        warning:
+            paste_with_caution: 'Plak je dump met voorzichtigheid, het kan gevoelige informatie bevatten! <strong>We slaan je dump niet op</strong>, tenzij je er expliciet om vraagt als je hem deelt.'
+    tools:
+        title: 'Hulpmiddelen om dit offline te doen'
+        description: 'Er bestaan genoeg tools om dit direct te doen bij het dumpen van je variabelen in je code.'
+        xdebug:
+            title: 'Xdebug'
+            description: 'Xdebug is een uitbreiding voor PHP om te helpen bij het debuggen en de ontwikkeling. Met deze extensie kunt u onder andere uw var_dump methode updaten om uw dumps duidelijk weer te geven, met bijvoorbeeld syntax highlighting en inspringing.'
+            btn: 'Meer informatie over Xdebug'
+        vardumper:
+            title: "Symfony's VarDumper"
+            description: 'Als je aan een Symfony-project werkt, ken je waarschijnlijk de VarDumper. Dit gereedschap is een versie van var_dump onder steroïden, waarmee je naast het markeren van de syntax, je objecten en arrays kunt uitvouwen en vouwen, zoals wanneer je blokken code in je favoriete IDE vouwt.'
+            btn: 'Meer informatie over VarDumper'
+    footer:
+        brought_to_you_by: "gebracht door"
+    modal:
+        title: "Resultaat exporteren"
+        close: "Sluit"
+        copy: "Kopieer"

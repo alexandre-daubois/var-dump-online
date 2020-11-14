@@ -1,34 +1,3 @@
-@font-face {
-    font-family: GoBoldItalic;
-    src: url(/fonts/Gobold%20Regular%20Italic.otf);
-}
-
-@font-face {
-    font-family: GoBoldItalicHollow;
-    src: url(/fonts/Gobold%20Hollow%20Italic.otf);
-}
-
-@font-face {
-    font-family: GoBoldLowplus;
-    src: url(/fonts/Gobold%20Lowplus.otf);
-}
-
-* {
-    font-family: 'Open Sans', sans-serif;
-}
-
-h1 {
-    font-family: GoBoldItalicHollow, sans-serif;
-}
-
-.navbar-brand {
-    font-family: GoBoldItalic;
-}
-
-.nav-link {
-    font-family: GoBoldLowplus;
-}
-
 #result {
     background-color: white;
     border: 1px solid rgba(155,155,155,0.5);
