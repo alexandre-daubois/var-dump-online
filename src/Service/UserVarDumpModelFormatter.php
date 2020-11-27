@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
+use App\Exception\FormatterResultCheckFailedException;
 use App\Exception\UnknownTypeException;
 use function Symfony\Component\String\u;
 use Symfony\Component\String\UnicodeString;
@@ -15,17 +16,37 @@ class UserVarDumpModelFormatter
      */
     private $root;
 
-    public function __construct()
+    /**
+     * @var FormatterResultChecker
+     */
+    private $formatterResultChecker;
+
+    /**
+     * UserVarDumpModelFormatter constructor.
+     */
+    public function __construct(FormatterResultChecker $formatterResultChecker)
     {
         $this->root = new Node();
         $this->root->setDepth(0);
+        $this->formatterResultChecker = $formatterResultChecker;
     }
 
+    /**
+     * @return Node
+     *
+     * @throws FormatterResultCheckFailedException
+     * @throws UnknownTypeException
+     * @throws \Exception
+     */
     public function format(UserVarDumpModel $model)
     {
         $content = $model->getContent();
 
         $this->processContent($content, $this->root);
+
+        if (!$this->formatterResultChecker->checkFormatResult($this->root, $model)) {
+            throw new FormatterResultCheckFailedException($this->root);
+        }
 
         return $this->root;
     }

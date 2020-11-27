@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: 'Fügen Sie Ihren Dump mit Vorsicht ein, er könnte sensible Informationen enthalten! <strong>Wir speichern Ihr Dump nicht </strong>, es sei denn, Sie fragen ausdrücklich danach, wenn Sie es freigeben.'
+        error:
+            invalid_output: "Es scheint, dass Ihr var_dump einen oder mehrere Fehler enthält. Wir zeigen das Ergebnis, das wir formatieren konnten, aber wir garantieren nicht seine Gültigkeit. Stellen Sie sicher, dass Sie die gesamte Ausgabe Ihres var_dump einfügen, ohne sie zu modifizieren."
+            cant_parse: "Es scheint, dass Ihr var_dump einen Fehler oder Fehler enthält. Wir waren nicht in der Lage, sie zu formatieren."
+            cant_share: "Sie können eine Ausgabe von var_dump, die Fehler enthält, nicht freigeben."
     tools:
         title: 'Werkzeuge, um dies offline zu tun'
         description: 'Es gibt viele Werkzeuge, um dies direkt beim Dumping Ihrer Variablen in Ihrem Code zu tun.'

@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: 'Pegue su basurero con precaución, ¡podría contener información sensible! <strong>No guardamos tu dump</strong>, a menos que lo pidas explícitamente cuando lo compartas.'
+        error:
+            invalid_output: "Parece que tu var_dump contiene uno o más errores. Mostramos el resultado que hemos logrado formatear, pero no garantizamos su validez. Asegúrate de pegar toda la salida de tu var_dump sin modificarla."
+            cant_parse: "Parece que tu var_dump contiene un error o errores. No pudimos formatearlo."
+            cant_share: "No se puede compartir una salida de var_dump que contenga errores."
     tools:
         title: 'Herramientas para hacer esto fuera de línea'
         description: 'Existe un montón de herramientas para hacer esto directamente al volcar sus variables en su código.'

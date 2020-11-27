@@ -60,6 +60,18 @@
                 </div>
             </div>
 
+            <div class="alert alert-danger d-none" id="alert-invalid-output">
+                {{ 'home.alert.error.invalid_output'|trans }}
+            </div>
+
+            <div class="alert alert-danger d-none" id="alert-cant-parse-output">
+                {{ 'home.alert.error.cant_parse'|trans }}
+            </div>
+
+            <div class="alert alert-danger d-none" id="alert-cant-share">
+                {{ 'home.alert.error.cant_share'|trans }}
+            </div>
+
             <div class="col-12 py-3 collapse {% if nodes is defined %}show{% endif %}" id="result">
                 {% if nodes is defined %}
                     {% for node in nodes.children %}

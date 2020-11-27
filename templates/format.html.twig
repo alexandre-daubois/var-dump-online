@@ -1,3 +1,5 @@
-{% for node in nodes.children %}
-    {% include 'node.html.twig' with {node: node} %}
-{% endfor %}
+{% if nodes is not null %}
+    {% for node in nodes.children %}
+        {% include 'node.html.twig' with {node: node} %}
+    {% endfor %}
+{% endif %}
