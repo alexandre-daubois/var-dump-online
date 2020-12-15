@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: 'Plak je dump met voorzichtigheid, het kan gevoelige informatie bevatten! <strong>We slaan je dump niet op</strong>, tenzij je er expliciet om vraagt als je hem deelt.'
+        error:
+            invalid_output: "Het lijkt erop dat je var_dump één of meer fouten bevat. We tonen het resultaat dat we hebben weten te formatteren, maar we garanderen de geldigheid ervan niet. Zorg ervoor dat u de gehele uitvoer van uw var_dump plakt zonder deze aan te passen."
+            cant_parse: "Het blijkt dat uw var_dump een fout of vergissingen bevat. We waren niet in staat om het te formatteren."
+            cant_share: "U kunt een uitvoer van var_dump die fouten bevat niet delen."
     tools:
         title: 'Hulpmiddelen om dit offline te doen'
         description: 'Er bestaan genoeg tools om dit direct te doen bij het dumpen van je variabelen in je code.'

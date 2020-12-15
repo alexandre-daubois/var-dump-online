@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\GlobalStats;
 use App\Entity\UserVarDump;
 use App\Entity\UserVarDumpModel;
+use App\Exception\FormatterResultCheckFailedException;
+use App\Exception\UnknownTypeException;
 use App\Form\Type\UserVarDumpFormType;
 use App\Service\GlobalStatsManager;
 use App\Service\UserVarDumpExporter;
@@ -14,12 +16,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Class HomeController
- * @package App\Controller
+ * Class HomeController.
  *
  * @Route("/{_locale}", requirements={"_locale": "en|fr|es|de|it|nl"}, defaults={"_locale":"en"})
  */
@@ -83,23 +85,32 @@ class HomeController extends AbstractController
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
         $root = null;
+        $responsePayload = [];
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $root = $formatter->format($userVarDumpModel);
+                try {
+                    $root = $formatter->format($userVarDumpModel);
+                } catch (FormatterResultCheckFailedException $e) {
+                    $root = $e->root;
+                    $responsePayload['error'] = true;
+                } catch (UnknownTypeException $e) {
+                    $responsePayload['error'] = true;
+                }
+
                 $globalStatsManager->incrementStat(GlobalStats::BEAUTIFIER_USE_KEY);
                 $em->flush();
             }
         }
 
-        return new JsonResponse([
-            'html' => $this->renderView('format.html.twig', [
-                    'form' => $form->createView(),
-                    'nodes' => $root,
-                ]),
+        $responsePayload['html'] = $this->renderView('format.html.twig', [
+            'form' => $form->createView(),
+            'nodes' => $root,
         ]);
+
+        return new JsonResponse($responsePayload);
     }
 
     /**
@@ -109,7 +120,7 @@ class HomeController extends AbstractController
      *
      * @throws \Exception
      */
-    public function share(Request $request, EntityManagerInterface $entityManager)
+    public function share(Request $request, UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager)
     {
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
@@ -119,6 +130,12 @@ class HomeController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                try {
+                    $formatter->format($userVarDumpModel);
+                } catch (UnknownTypeException | FormatterResultCheckFailedException $e) {
+                    throw new BadRequestHttpException();
+                }
+
                 $dump = new UserVarDump();
                 $dump->setSubmittedAt(new \DateTime('now'));
                 $dump->setContent($userVarDumpModel->getContent());

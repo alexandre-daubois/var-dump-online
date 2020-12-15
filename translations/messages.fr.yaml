@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: "Collez votre sortie de var_dump avec précaution, il se pourrait qu'il contienne des informations sensibles. <strong>Nous n'enregistrons pas votre sortie de var_dump</strong>, à moins que vous le demandiez explicitement lorsque vous le partagez."
+        error:
+            invalid_output: "Il semble que votre var_dump contient une ou des erreurs. Nous affichons le résultats que nous avons réussi à formater, mais nous ne garantissons pas sa validité. Assurez-vous de coller l'intégralité de la sortie de votre var_dump sans le modifier."
+            cant_parse: "Il semble que votre var_dump contient une ou des erreurs. Nous n'avons pas réussi à le formater."
+            cant_share: "Vous ne pouvez pas partager une sortie de var_dump qui contient des erreurs."
     tools:
         title: 'Les outils pour faire la même chose hors-ligne'
         description: "Il existe une multitude d'outils pour faire cela directement lorsque vous <em>dumpez</em> vos variables dans votre code."

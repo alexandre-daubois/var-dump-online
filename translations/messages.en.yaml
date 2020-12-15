@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: 'Paste your dump with caution, it could contain sensitive information! <strong>We do not store your dump</strong>, unless you explicitly ask for it when you share it.'
+        error:
+            invalid_output: "It seems that your var_dump contains one or more errors. We display the result that we managed to format, but we do not guarantee its validity. Make sure you paste the entire output of your var_dump without modifying it."
+            cant_parse: "It seems that your var_dump contains one or more errors. We were unable to format it."
+            cant_share: "You can't share a var_dump that contains errors."
     tools:
         title: 'Tools to do this offline'
         description: 'It exists plenty of tools to do this directly when dumping your variables in your code.'

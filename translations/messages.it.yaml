@@ -22,6 +22,10 @@ home:
     alert:
         warning:
             paste_with_caution: 'Incolla la tua discarica con cautela, potrebbe contenere informazioni sensibili! <strong>Non conserviamo la tua discarica</strong>, a meno che tu non lo chieda esplicitamente quando la condividi.'
+        error:
+            invalid_output: "Sembra che il vostro var_dump contenga uno o più errori. Mostriamo il risultato che siamo riusciti a formattare, ma non ne garantiamo la validità. Assicuratevi di incollare l'intero output del vostro var_dump senza modificarlo."
+            cant_parse: "Sembra che il vostro var_dump contenga uno o più errori. Non siamo stati in grado di formattarlo."
+            cant_share: "Non è possibile condividere un output da var_dump che contiene errori."
     tools:
         title: 'Strumenti per farlo offline'
         description: 'Esistono molti strumenti per farlo direttamente quando si scaricano le variabili nel codice.'
