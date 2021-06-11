@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +22,6 @@ class UserVarDump
 
     /**
      * @var string
-     * @Encrypted()
      * @ORM\Column(type="text")
      */
     protected $content;
