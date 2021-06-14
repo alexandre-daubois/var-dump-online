@@ -6,10 +6,7 @@ use App\Entity\Formatter\Node;
 
 class FormatterResultCheckFailedException extends \Exception
 {
-    /**
-     * @var Node
-     */
-    public $root = null;
+    public ?Node $root = null;
 
     public function __construct(Node $root = null)
     {

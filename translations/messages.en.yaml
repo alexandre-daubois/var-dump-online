@@ -4,7 +4,7 @@ home:
         what_is_var_dump_formatter_io: "VarDumperFormatter.io beautifies this method's output for you, like it already did for %dumpsCount% var_dumps."
         beautify: 'Beautify'
     share:
-        tooltip: 'When sharing it, your dump will be saved in database. Your dump will be encrypted, but be sure to avoid any sensitive information to be stored in our database.'
+        tooltip: 'When sharing it, your dump will be saved in database. Avoid including sensitive information in it.'
         link: 'Share link'
         btn: 'Share'
     export:

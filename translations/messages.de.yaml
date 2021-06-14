@@ -4,7 +4,7 @@ home:
         what_is_var_dump_formatter_io: "VarDumperFormatter.io verschönert die Ausgabe dieser Methode für Sie, wie sie es bereits für %dumpsCount% var_dumps getan hat."
         beautify: 'Verschönern Sie'
     share:
-        tooltip: 'Wenn Sie es freigeben, wird Ihr Dump in der Datenbank gespeichert. Ihr Dump wird verschlüsselt, aber achten Sie darauf, dass keine sensiblen Informationen in unserer Datenbank gespeichert werden.'
+        tooltip: 'Wenn Sie es freigeben, wird Ihr Dump in der Datenbank gespeichert. Vermeiden Sie es, sensible Informationen darin aufzunehmen.'
         link: 'Link zum Teilen'
         btn: 'Teilen'
     export:

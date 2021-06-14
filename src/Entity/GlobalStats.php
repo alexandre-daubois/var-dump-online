@@ -4,59 +4,39 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class UserVarDump.
- *
- * @ORM\Entity()
- * @ORM\Table()
- */
-class GlobalStats
+#[ORM\Entity]
+final class GlobalStats
 {
-    const BEAUTIFIER_USE_KEY = 'BEAUTIFIER_USE_KEY';
-    const EXPORTER_JSON_KEY = 'EXPORTER_JSON_KEY';
-    const EXPORTER_XML_KEY = 'EXPORTER_XML_KEY';
-    const EXPORTER_VARDUMP_KEY = 'EXPORTER_VARDUMP_KEY';
+    public const BEAUTIFIER_USE_KEY = 'BEAUTIFIER_USE_KEY';
+    public const EXPORTER_JSON_KEY = 'EXPORTER_JSON_KEY';
+    public const EXPORTER_XML_KEY = 'EXPORTER_XML_KEY';
+    public const EXPORTER_VARDUMP_KEY = 'EXPORTER_VARDUMP_KEY';
 
-    /**
-     * @var
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=256, name="stats_key")
-     */
-    protected $key;
+    #[ORM\Column(name: 'stats_key', type: 'string', length: 256)]
+    private string $key;
 
-    /**
-     * @var
-     * @ORM\Column(type="integer", name="stats_value")
-     */
-    protected $value;
+    #[ORM\Column(name: 'stats_value', type: 'integer', options: ['default' => 0])]
+    private int $value = 0;
 
     public function __construct(string $key)
     {
         $this->key = $key;
-        $this->value = 0;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
+    public function setId(int $id): GlobalStats
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getKey(): string
@@ -64,24 +44,20 @@ class GlobalStats
         return $this->key;
     }
 
-    public function setKey(string $key): void
+    public function setKey(string $key): GlobalStats
     {
         $this->key = $key;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue(): int
     {
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue(int $value): void
+    public function setValue(int $value): GlobalStats
     {
         $this->value = $value;
+        return $this;
     }
 }

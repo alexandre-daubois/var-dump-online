@@ -4,7 +4,7 @@ home:
         what_is_var_dump_formatter_io: "VarDumperFormatter.io  embellece la salida de este método para usted, como ya lo hizo para %dumpsCount% var_dumps."
         beautify: 'Embellecer'
     share:
-        tooltip: 'Cuando lo comparta, su volcado se guardará en la base de datos. Su volcado será encriptado, pero asegúrese de evitar que cualquier información sensible sea almacenada en nuestra base de datos.'
+        tooltip: 'Cuando lo comparta, su volcado se guardará en la base de datos. Evite incluir información sensible en él.'
         link: 'Compartir enlace'
         btn: 'Comparte'
     export:

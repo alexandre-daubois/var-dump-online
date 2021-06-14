@@ -4,60 +4,35 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class UserVarDump.
- *
- * @ORM\Entity()
- * @ORM\Table()
- */
-class UserVarDump
+#[ORM\Entity]
+final class UserVarDump
 {
-    /**
-     * @var
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="text")
-     */
-    protected $content;
+    #[ORM\Column(type: 'text')]
+    private string $content;
 
-    /**
-     * @var ?\DateTime
-     * @ORM\Column(type="datetime")
-     */
-    protected $submittedAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTime $submittedAt;
 
-    /**
-     * @var
-     * @ORM\Column(type="text")
-     */
-    protected $token;
+    #[ORM\Column(type: 'text')]
+    private string $token;
 
-    /**
-     * @var
-     * @ORM\Column(type="integer", options={"default": 0})
-     */
-    protected $seen = 0;
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $seen = 0;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
+    public function setId(int $id): UserVarDump
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getContent(): string
@@ -65,9 +40,10 @@ class UserVarDump
         return $this->content;
     }
 
-    public function setContent(string $content): void
+    public function setContent(string $content): UserVarDump
     {
         $this->content = $content;
+        return $this;
     }
 
     public function getSubmittedAt(): ?\DateTime
@@ -75,40 +51,31 @@ class UserVarDump
         return $this->submittedAt;
     }
 
-    public function setSubmittedAt(?\DateTime $submittedAt): void
+    public function setSubmittedAt(?\DateTime $submittedAt): UserVarDump
     {
         $this->submittedAt = $submittedAt;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @param mixed $token
-     */
-    public function setToken($token): void
+    public function setToken(string $token): UserVarDump
     {
         $this->token = $token;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSeen()
+    public function getSeen(): int
     {
         return $this->seen;
     }
 
-    /**
-     * @param mixed $seen
-     */
-    public function setSeen($seen): void
+    public function setSeen(int $seen): UserVarDump
     {
         $this->seen = $seen;
+        return $this;
     }
 }

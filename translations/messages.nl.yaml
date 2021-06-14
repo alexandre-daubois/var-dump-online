@@ -4,7 +4,7 @@ home:
         what_is_var_dump_formatter_io: "VarDumperFormatter.io verfraait de output van deze methode voor u, zoals het al deed voor %dumpsCount% var_dumps."
         beautify: 'Verfraai'
     share:
-        tooltip: 'Bij het delen wordt je dump opgeslagen in de database. Uw dump zal worden gecodeerd, maar zorg ervoor dat er geen gevoelige informatie wordt opgeslagen in onze database.'
+        tooltip: 'Bij het delen wordt je dump opgeslagen in de database. Vermijd om er gevoelige informatie in op te nemen.'
         link: 'Deelverbinding'
         btn: 'Deel'
     export:

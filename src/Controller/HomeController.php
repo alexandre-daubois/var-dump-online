@@ -11,6 +11,7 @@ use App\Form\Type\UserVarDumpFormType;
 use App\Service\GlobalStatsManager;
 use App\Service\UserVarDumpExporter;
 use App\Service\UserVarDumpModelFormatter;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,19 +21,24 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * Class HomeController.
- *
- * @Route("/{_locale}", requirements={"_locale": "en|fr|es|de|it|nl"}, defaults={"_locale":"en"})
- */
+#[Route("/{_locale}", requirements: ['_locale' => "en|fr|es|de|it|nl"], defaults: ['_locale' => 'en'])]
 class HomeController extends AbstractController
 {
-    /**
-     * @Route(name="_home")
-     *
-     * @return Response
-     */
-    public function home(Request $request, UserVarDumpModelFormatter $formatter)
+    protected UserVarDumpModelFormatter $formatter;
+
+    protected EntityManagerInterface $entityManager;
+
+    protected GlobalStatsManager $globalStatsManager;
+
+    public function __construct(UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager, GlobalStatsManager $globalStatsManager)
+    {
+        $this->formatter = $formatter;
+        $this->entityManager = $entityManager;
+        $this->globalStatsManager = $globalStatsManager;
+    }
+
+    #[Route(name: '_home')]
+    public function home(): Response
     {
         $form = $this->createForm(UserVarDumpFormType::class);
         $stat = $this->getDoctrine()->getRepository(GlobalStats::class)->findOneBy(['key' => GlobalStats::BEAUTIFIER_USE_KEY]);
@@ -43,26 +49,19 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/shared/{token}", name="_shared")
-     *
-     * @param $token
-     */
-    public function shared($token, Request $request, UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager)
+    #[Route('/shared/{token}', name: '_shared')]
+    public function shared(string $token): Response
     {
-        /** @var UserVarDump $dump */
-        $dump = $entityManager->getRepository(UserVarDump::class)->findOneBy(['token' => $token]);
-
-        if (null === $dump) {
-            $this->redirectToRoute('_home');
+        if (null === $dump = $this->entityManager->getRepository(UserVarDump::class)->findOneBy(['token' => $token])) {
+            return $this->redirectToRoute('_home');
         }
 
         $dump->setSeen($dump->getSeen() + 1);
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         $model = (new UserVarDumpModel())
             ->setContent($dump->getContent());
-        $root = $formatter->format($model);
+        $root = $this->formatter->format($model);
 
         $form = $this->createForm(UserVarDumpFormType::class, $model);
 
@@ -75,12 +74,8 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/format", name="_format")
-     *
-     * @return Response
-     */
-    public function format(Request $request, UserVarDumpModelFormatter $formatter, GlobalStatsManager $globalStatsManager, EntityManagerInterface $em)
+    #[Route("/format", name: '_format')]
+    public function format(Request $request): JsonResponse
     {
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
@@ -92,16 +87,16 @@ class HomeController extends AbstractController
 
             if ($form->isValid()) {
                 try {
-                    $root = $formatter->format($userVarDumpModel);
+                    $root = $this->formatter->format($userVarDumpModel);
                 } catch (FormatterResultCheckFailedException $e) {
                     $root = $e->root;
                     $responsePayload['error'] = true;
-                } catch (UnknownTypeException $e) {
+                } catch (UnknownTypeException) {
                     $responsePayload['error'] = true;
                 }
 
-                $globalStatsManager->incrementStat(GlobalStats::BEAUTIFIER_USE_KEY);
-                $em->flush();
+                $this->globalStatsManager->incrementStat(GlobalStats::BEAUTIFIER_USE_KEY);
+                $this->entityManager->flush();
             }
         }
 
@@ -113,36 +108,29 @@ class HomeController extends AbstractController
         return new JsonResponse($responsePayload);
     }
 
-    /**
-     * @Route("/share", name="_share")
-     *
-     * @return JsonResponse
-     *
-     * @throws \Exception
-     */
-    public function share(Request $request, UserVarDumpModelFormatter $formatter, EntityManagerInterface $entityManager)
+    #[Route('/share', name: '_share')]
+    public function share(Request $request): JsonResponse
     {
         $userVarDumpModel = new UserVarDumpModel();
         $form = $this->createForm(UserVarDumpFormType::class, $userVarDumpModel);
-        $root = null;
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 try {
-                    $formatter->format($userVarDumpModel);
-                } catch (UnknownTypeException | FormatterResultCheckFailedException $e) {
+                    $this->formatter->format($userVarDumpModel);
+                } catch (UnknownTypeException | FormatterResultCheckFailedException) {
                     throw new BadRequestHttpException();
                 }
 
-                $dump = new UserVarDump();
-                $dump->setSubmittedAt(new \DateTime('now'));
-                $dump->setContent($userVarDumpModel->getContent());
-                $dump->setToken(bin2hex(random_bytes(16)));
+                $dump = (new UserVarDump())
+                    ->setSubmittedAt(new \DateTime('now'))
+                    ->setContent($userVarDumpModel->getContent())
+                    ->setToken(\bin2hex(\random_bytes(16)));
 
-                $entityManager->persist($dump);
-                $entityManager->flush();
+                $this->entityManager->persist($dump);
+                $this->entityManager->flush();
             } else {
                 throw new AccessDeniedException();
             }
@@ -155,17 +143,11 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/export/{format}", name="_export")
-     *
-     * @return Response
-     *
-     * @throws \Exception
-     */
-    public function export(string $format, Request $request, UserVarDumpExporter $exporter, UserVarDumpModelFormatter $formatter, EntityManagerInterface $em)
+    #[Route('/export/{format}', name: '_export')]
+    public function export(string $format, Request $request, UserVarDumpExporter $exporter): JsonResponse
     {
         if (!\in_array($format, UserVarDumpExporter::getSupportedFormats(), true)) {
-            throw new AccessDeniedException();
+            throw new BadRequestHttpException();
         }
 
         $userVarDumpModel = new UserVarDumpModel();
@@ -177,9 +159,9 @@ class HomeController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $root = $formatter->format($userVarDumpModel);
+                $root = $this->formatter->format($userVarDumpModel);
                 $serializedResult = $exporter->export($root, $format);
-                $em->flush();
+                $this->entityManager->flush();
             }
         }
 

@@ -5,55 +5,43 @@ namespace App\Entity\Formatter;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class Node.
- *
  * @Serializer\ExclusionPolicy("all")
  */
-class Node
+final class Node
 {
-    const TYPE_ARRAY = 'array';
-    const TYPE_FLOAT = 'float';
-    const TYPE_INT = 'int';
-    const TYPE_STRING = 'string';
-    const TYPE_OBJECT = 'object';
-    const TYPE_BOOLEAN = 'bool';
-    const TYPE_RESOURCE = 'resource';
-    const TYPE_NULL = 'NULL';
-    const TYPE_NONE = 'none';
+    public const TYPE_ARRAY = 'array';
+    public const TYPE_FLOAT = 'float';
+    public const TYPE_INT = 'int';
+    public const TYPE_STRING = 'string';
+    public const TYPE_OBJECT = 'object';
+    public const TYPE_BOOLEAN = 'bool';
+    public const TYPE_RESOURCE = 'resource';
+    public const TYPE_NULL = 'NULL';
+    public const TYPE_NONE = 'none';
 
     /**
-     * @var string
      * @Serializer\Expose()
      */
-    protected $type = self::TYPE_NONE;
+    private string $type = self::TYPE_NONE;
 
     /**
-     * @var string
      * @Serializer\Expose()
      */
-    protected $value;
+    private string $value;
+
+    private int $depth;
 
     /**
-     * @var int
-     */
-    protected $depth;
-
-    /**
-     * @var array for exemple, the size of an array, the internal PHP identifier of an object, etc
      * @Serializer\Expose()
      */
-    protected $extraData;
+    private array $extraData;
 
     /**
-     * @var Node[]
      * @Serializer\Expose()
      */
-    protected $children;
+    private array $children;
 
-    /**
-     * @var Node
-     */
-    protected $parent;
+    private Node $parent;
 
     public function __construct()
     {
@@ -108,12 +96,6 @@ class Node
         return $this;
     }
 
-    /**
-     * @param $key
-     * @param $data
-     *
-     * @return $this
-     */
     public function addExtraData($key, $data): Node
     {
         $this->extraData[$key] = $data;
@@ -121,17 +103,11 @@ class Node
         return $this;
     }
 
-    /**
-     * @return Node[]
-     */
     public function getChildren(): array
     {
         return $this->children;
     }
 
-    /**
-     * @param Node[] $children
-     */
     public function setChildren(array $children): void
     {
         $this->children = $children;

@@ -5,31 +5,27 @@ namespace App\Service;
 use App\Entity\GlobalStats;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GlobalStatsManager
+final class GlobalStatsManager
 {
-    protected $em;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $entityManager;
+        $this->entityManager = $entityManager;
     }
 
-    public function getStats(string $key)
+    public function getStats(string $key): ?int
     {
-        /** @var GlobalStats $stats */
-        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
-        if (null === $stats) {
+        if (null === $stats = $this->entityManager->getRepository(GlobalStats::class)->findOneBy(['key' => $key])) {
             return null;
         }
 
         return $stats->getValue();
     }
 
-    public function setStats(string $key, int $value)
+    public function setStats(string $key, int $value): ?GlobalStats
     {
-        /** @var GlobalStats $stats */
-        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
-        if (null === $stats) {
+        if (null === $stats = $this->entityManager->getRepository(GlobalStats::class)->findOneBy(['key' => $key])) {
             return null;
         }
 
@@ -38,11 +34,9 @@ class GlobalStatsManager
         return $stats;
     }
 
-    public function incrementStat(string $key)
+    public function incrementStat(string $key): ?GlobalStats
     {
-        /** @var GlobalStats $stats */
-        $stats = $this->em->getRepository(GlobalStats::class)->findOneBy(['key' => $key]);
-        if (null === $stats) {
+        if (null === $stats = $this->entityManager->getRepository(GlobalStats::class)->findOneBy(['key' => $key])) {
             return null;
         }
 

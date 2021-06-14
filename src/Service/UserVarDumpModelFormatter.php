@@ -11,19 +11,10 @@ use Symfony\Component\String\UnicodeString;
 
 class UserVarDumpModelFormatter
 {
-    /**
-     * @var Node
-     */
-    private $root;
+    private Node $root;
 
-    /**
-     * @var FormatterResultChecker
-     */
-    private $formatterResultChecker;
+    private FormatterResultChecker $formatterResultChecker;
 
-    /**
-     * UserVarDumpModelFormatter constructor.
-     */
     public function __construct(FormatterResultChecker $formatterResultChecker)
     {
         $this->root = new Node();
@@ -31,14 +22,7 @@ class UserVarDumpModelFormatter
         $this->formatterResultChecker = $formatterResultChecker;
     }
 
-    /**
-     * @return Node
-     *
-     * @throws FormatterResultCheckFailedException
-     * @throws UnknownTypeException
-     * @throws \Exception
-     */
-    public function format(UserVarDumpModel $model)
+    public function format(UserVarDumpModel $model): Node
     {
         $content = $model->getContent();
 
@@ -51,15 +35,9 @@ class UserVarDumpModelFormatter
         return $this->root;
     }
 
-    /**
-     * @param Node|null $currentNode
-     *
-     * @throws UnknownTypeException
-     */
-    public function processContent(string $content, Node $currentNode)
+    public function processContent(string $content, Node $currentNode): Node
     {
         $content = u($content);
-        $node = null;
 
         if ($content->startsWith(Node::TYPE_ARRAY)) {
             $node = new Node();
@@ -115,20 +93,17 @@ class UserVarDumpModelFormatter
     public function createPrimitiveNode(string $type, UnicodeString $content): Node
     {
         if (!\in_array($type, [Node::TYPE_INT, Node::TYPE_FLOAT, Node::TYPE_BOOLEAN])) {
-            throw new \Exception('Format is not a primitive');
+            throw new \InvalidArgumentException(sprintf('Type %s is not a primitive.', $type));
         }
 
-        $node = new Node();
-        $node
+        return (new Node())
             ->setType($type)
             ->setValue(
                 $this->extractValue($type, $content)
             );
-
-        return $node;
     }
 
-    public function extractValue(string $type, UnicodeString $content): UnicodeString
+    protected function extractValue(string $type, UnicodeString $content): UnicodeString
     {
         return $content
             ->after($type.'(')
@@ -138,7 +113,7 @@ class UserVarDumpModelFormatter
     /**
      * We use `substr` to ensure we capture the whole string, even if it contains double quotes.
      */
-    public function extractStringValue(UnicodeString $content, int $length): UnicodeString
+    protected function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
         $subString = $content
             ->after('"');
@@ -146,16 +121,13 @@ class UserVarDumpModelFormatter
         return u(substr($subString, 0, $length));
     }
 
-    public function extractProperties(UnicodeString $content): UnicodeString
+    protected function extractProperties(UnicodeString $content): UnicodeString
     {
         return $content
             ->after('{')
             ->beforeLast('}');
     }
 
-    /**
-     * @throws UnknownTypeException
-     */
     private function processProperties(UnicodeString $content, Node $currentNode, int $propertiesCount): void
     {
         if (0 === $propertiesCount) {
