@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class UserVarDumpModel
+class UserVarDumpModel
 {
     /**
      * Maximum length of 128KB.

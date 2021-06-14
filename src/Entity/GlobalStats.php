@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-final class GlobalStats
+class GlobalStats
 {
     public const BEAUTIFIER_USE_KEY = 'BEAUTIFIER_USE_KEY';
     public const EXPORTER_JSON_KEY = 'EXPORTER_JSON_KEY';

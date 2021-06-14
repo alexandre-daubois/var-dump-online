@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-final class UserVarDump
+class UserVarDump
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
