@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Formatter\Node;
 use App\Entity\UserVarDumpModel;
 
-final class FormatterResultChecker
+class FormatterResultChecker
 {
     private UserVarDumpExporter $exporter;
 

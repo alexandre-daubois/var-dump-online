@@ -4,6 +4,8 @@
 {{ node.type }}({{ node.value }})
 {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_NULL") %}
 NULL
+{% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_ENUM") %}
+{{ node.type }}({{ node.value }})
 {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_RESOURCE") %}
 {{ node.type }}({{ node.extraData.internalId }}) of type ({{ node.value }})
 {% elseif node.type == constant("App\\Entity\\Formatter\\Node::TYPE_STRING") %}

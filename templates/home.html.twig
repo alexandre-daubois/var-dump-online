@@ -5,7 +5,7 @@
         <div class="container text-center">
             <img class="img-fluid my-3" src="/logo_white_background.jpg">
             <p class="lead">{{ 'home.lead.what_is_var_dump'|trans|raw }}</p>
-            <p class="lead">{{ 'home.lead.what_is_var_dump_formatter_io'|trans({'%dumpsCount%': dumpsCount}) }}</p>
+            <p class="lead">{{ 'home.lead.what_is_var_dump_formatter_io'|trans({'%dumpsCount%': getUsageCount()}) }}</p>
             <a class="btn btn-lg btn-outline-warning mt-4"
                href="https://www.php.net/manual/en/function.var-dump.php">{{ 'home.btn.learn_more'|trans }}</a>
         </div>

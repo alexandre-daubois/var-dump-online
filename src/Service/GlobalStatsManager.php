@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\GlobalStats;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class GlobalStatsManager
+class GlobalStatsManager
 {
     private EntityManagerInterface $entityManager;
 

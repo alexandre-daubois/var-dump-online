@@ -17,6 +17,7 @@ final class Node
     public const TYPE_BOOLEAN = 'bool';
     public const TYPE_RESOURCE = 'resource';
     public const TYPE_NULL = 'NULL';
+    public const TYPE_ENUM = 'enum';
     public const TYPE_NONE = 'none';
 
     /**
@@ -27,26 +28,21 @@ final class Node
     /**
      * @Serializer\Expose()
      */
-    private string $value;
+    private ?string $value = null;
 
-    private int $depth;
-
-    /**
-     * @Serializer\Expose()
-     */
-    private array $extraData;
+    private int $depth = 0;
 
     /**
      * @Serializer\Expose()
      */
-    private array $children;
+    private array $extraData = [];
+
+    /**
+     * @Serializer\Expose()
+     */
+    private array $children = [];
 
     private Node $parent;
-
-    public function __construct()
-    {
-        $this->children = [];
-    }
 
     public function getType(): string
     {
@@ -60,12 +56,12 @@ final class Node
         return $this;
     }
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    public function setValue(string $value): Node
+    public function setValue(?string $value): Node
     {
         $this->value = $value;
 
@@ -119,7 +115,7 @@ final class Node
         $this->children[] = $node;
         $node->setParent($this);
 
-        return $node;
+        return $this;
     }
 
     public function getParent(): Node

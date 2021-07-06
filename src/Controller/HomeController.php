@@ -40,12 +40,8 @@ class HomeController extends AbstractController
     #[Route(name: '_home')]
     public function home(): Response
     {
-        $form = $this->createForm(UserVarDumpFormType::class);
-        $stat = $this->getDoctrine()->getRepository(GlobalStats::class)->findOneBy(['key' => GlobalStats::BEAUTIFIER_USE_KEY]);
-
         return $this->render('home.html.twig', [
-            'form' => $form->createView(),
-            'dumpsCount' => $stat->getValue(),
+            'form' => $this->createForm(UserVarDumpFormType::class)->createView(),
         ]);
     }
 
@@ -61,16 +57,17 @@ class HomeController extends AbstractController
 
         $model = (new UserVarDumpModel())
             ->setContent($dump->getContent());
-        $root = $this->formatter->format($model);
 
-        $form = $this->createForm(UserVarDumpFormType::class, $model);
-
-        $stat = $this->getDoctrine()->getRepository(GlobalStats::class)->findOneBy(['key' => GlobalStats::BEAUTIFIER_USE_KEY]);
+        try {
+            $root = $this->formatter->format($model);
+        } catch (FormatterResultCheckFailedException) {
+            // Shared links can't contain errors, but just in case
+            return $this->redirectToRoute('_home');
+        }
 
         return $this->render('home.html.twig', [
-            'form' => $form->createView(),
+            'form' => $this->createForm(UserVarDumpFormType::class, $model)->createView(),
             'nodes' => $root,
-            'dumpsCount' => $stat->getValue(),
         ]);
     }
 

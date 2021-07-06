@@ -22,7 +22,7 @@ class UserVarDumpExporterTest extends TestCase
 
         $exporter = new UserVarDumpExporter($serializer, $twig, $globalStatsManager);
 
-        $this->expectExceptionMessage('Format is not supported (got invalid_format)');
+        $this->expectExceptionMessage('Format invalid_format is not supported.');
         $exporter->export(new Node(), 'invalid_format');
     }
 
@@ -39,7 +39,7 @@ class UserVarDumpExporterTest extends TestCase
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['serialize', 'deserialize'])
+            ->onlyMethods(['serialize', 'deserialize'])
             ->getMock();
         $serializer->expects($this->once())
             ->method('serialize');
@@ -62,7 +62,7 @@ class UserVarDumpExporterTest extends TestCase
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['serialize', 'deserialize'])
+            ->onlyMethods(['serialize', 'deserialize'])
             ->getMock();
         $serializer->expects($this->once())
             ->method('serialize');
@@ -87,7 +87,7 @@ class UserVarDumpExporterTest extends TestCase
 
         $exporter = $this->getMockBuilder(UserVarDumpExporter::class)
             ->setConstructorArgs([$serializer, $twig, $globalStatsManager])
-            ->setMethods(['formatVardump'])
+            ->onlyMethods(['formatVardump'])
             ->getMock();
 
         $exporter->expects($this->once())

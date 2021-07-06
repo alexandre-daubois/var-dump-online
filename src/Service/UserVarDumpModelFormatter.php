@@ -35,9 +35,9 @@ class UserVarDumpModelFormatter
         return $this->root;
     }
 
-    public function processContent(string $content, Node $currentNode): Node
+    public function processContent(string $rawContent, Node $currentNode): Node
     {
-        $content = u($content);
+        $content = u($rawContent);
 
         if ($content->startsWith(Node::TYPE_ARRAY)) {
             $node = new Node();
@@ -48,32 +48,31 @@ class UserVarDumpModelFormatter
 
             $this->processProperties($this->extractProperties($content), $node, $node->getValue());
         } elseif ($content->startsWith(Node::TYPE_FLOAT)) {
-            $node = $this->createPrimitiveNode(Node::TYPE_FLOAT, $content);
+            $node = $this->createScalarNode(Node::TYPE_FLOAT, $content);
         } elseif ($content->startsWith(Node::TYPE_BOOLEAN)) {
-            $node = $this->createPrimitiveNode(Node::TYPE_BOOLEAN, $content);
+            $node = $this->createScalarNode(Node::TYPE_BOOLEAN, $content);
         } elseif ($content->startsWith(Node::TYPE_INT)) {
-            $node = $this->createPrimitiveNode(Node::TYPE_INT, $content);
-        } elseif ($content->startsWith(Node::TYPE_NULL)) {
-            $node = new Node();
-            $node->setType(Node::TYPE_NULL);
+            $node = $this->createScalarNode(Node::TYPE_INT, $content);
+        } elseif ($content->startsWith(Node::TYPE_ENUM)) {
+            $node = $this->createScalarNode(Node::TYPE_ENUM, $content);
+        } elseif ($content->startsWith(Node::TYPE_NULL) || $content->startsWith(strtolower(Node::TYPE_NULL))) {
+            $node = (new Node())
+                ->setType(Node::TYPE_NULL);
         } elseif ($content->startsWith(Node::TYPE_RESOURCE)) {
-            $node = new Node();
-            $node
+            $node = (new Node())
                 ->setType(Node::TYPE_RESOURCE)
                 ->setValue($content->after('of type (')->before(')')->toString())
                 ->addExtraData('internalId', $content->after('resource(')->before(')')->toString());
         } elseif ($content->startsWith(Node::TYPE_STRING)) {
-            $node = new Node();
-
-            $node
+            $node = (new Node())
                 ->setType(Node::TYPE_STRING)
                 ->setExtraData([
-                    'length' => intval($this->extractValue(Node::TYPE_STRING, $content)->toString()),
-                ])
-                ->setValue($this->extractStringValue($content, intval($node->getExtraData()['length'])));
+                    'length' => (int) $this->extractValue(Node::TYPE_STRING, $content)->toString(),
+                ]);
+
+            $node->setValue($this->extractStringValue($content, (int) $node->getExtraData()['length']));
         } elseif ($content->startsWith(Node::TYPE_OBJECT)) {
-            $node = new Node();
-            $node
+            $node = (new Node())
                 ->setType(Node::TYPE_OBJECT)
                 ->setValue($this->extractValue(Node::TYPE_OBJECT, $content))
                 ->setDepth($currentNode->getDepth() + 1);
@@ -90,10 +89,10 @@ class UserVarDumpModelFormatter
         return $node;
     }
 
-    public function createPrimitiveNode(string $type, UnicodeString $content): Node
+    private function createScalarNode(string $type, UnicodeString $content): Node
     {
-        if (!\in_array($type, [Node::TYPE_INT, Node::TYPE_FLOAT, Node::TYPE_BOOLEAN])) {
-            throw new \InvalidArgumentException(sprintf('Type %s is not a primitive.', $type));
+        if (!\in_array($type, [Node::TYPE_INT, Node::TYPE_FLOAT, Node::TYPE_BOOLEAN, Node::TYPE_ENUM], true)) {
+            throw new \InvalidArgumentException(sprintf('Type %s is not scalar.', $type));
         }
 
         return (new Node())
@@ -103,7 +102,7 @@ class UserVarDumpModelFormatter
             );
     }
 
-    protected function extractValue(string $type, UnicodeString $content): UnicodeString
+    private function extractValue(string $type, UnicodeString $content): UnicodeString
     {
         return $content
             ->after($type.'(')
@@ -113,7 +112,7 @@ class UserVarDumpModelFormatter
     /**
      * We use `substr` to ensure we capture the whole string, even if it contains double quotes.
      */
-    protected function extractStringValue(UnicodeString $content, int $length): UnicodeString
+    private function extractStringValue(UnicodeString $content, int $length): UnicodeString
     {
         $subString = $content
             ->after('"');
@@ -121,7 +120,7 @@ class UserVarDumpModelFormatter
         return u(substr($subString, 0, $length));
     }
 
-    protected function extractProperties(UnicodeString $content): UnicodeString
+    private function extractProperties(UnicodeString $content): UnicodeString
     {
         return $content
             ->after('{')
@@ -134,12 +133,12 @@ class UserVarDumpModelFormatter
             return;
         }
 
-        $content = $content->trim();
-        $sanitizedContent = $content->toString();
+        $trimmedContent = $content->trim();
+        $sanitizedContent = $trimmedContent->toString();
 
         // Todo don't pay attention to brackets when in string context (to crash it : add one opening bracket without its closing one)
         $openingBracket = 0;
-        for ($i = 0; $i < strlen($sanitizedContent); ++$i) {
+        for ($i = 0, $iMax = strlen($sanitizedContent); $i < $iMax; ++$i) {
             if ('{' === $sanitizedContent[$i]) {
                 ++$openingBracket;
 
@@ -159,12 +158,12 @@ class UserVarDumpModelFormatter
             }
         }
 
-        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\)#(\d+) \(\d+\))|(resource\(\d+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(int\([-+]?\d+\))|(float\([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\))|(string\(\d+\) ".*")|(bool\((true|false)\))|(NULL)|(array\(\d+\))|(object\(.+\)#(\d+) \(\d+\))|(resource\(\d+\))|(enum\(.+\))/U', $sanitizedContent, $matches, PREG_OFFSET_CAPTURE);
         preg_match_all('/\[(\d+|.+)]=>/U', $sanitizedContent, $keyMatches);
 
         for ($i = 0; $i < count($matches[0]) && $i < $propertiesCount; ++$i) {
             $offset = $matches[0][$i][1]; // Offset key thanks to PREG_OFFSET_CAPTURE
-            $value = substr($content->toString(), $offset);
+            $value = substr($trimmedContent->toString(), $offset);
 
             $propertyNode = $this->processContent($value, $currentNode);
 
